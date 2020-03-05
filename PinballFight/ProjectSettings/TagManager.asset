@@ -7,6 +7,7 @@ TagManager:
   - Hardwall
   - Softwall
   - Ball
+  - Brick
   layers:
   - Default
   - TransparentFX

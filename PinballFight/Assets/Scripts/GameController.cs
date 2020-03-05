@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -24,6 +25,8 @@ public class GameController : MonoBehaviour {
 
     public bool is_paused {get; private set;}
     public bool is_finished {get; private set;}
+    float time_begin;
+    int checkpoint_state;
     
     void Awake()
     {
@@ -38,9 +41,9 @@ public class GameController : MonoBehaviour {
             item_prefabs.Add(item_name, ResManager.load_prefab(item_name));
         }
 
-        game_param = ParamManager.load_param(0);
-        //game_param = new GameParam();
-        //ParamManager.save_param(0, game_param);
+        //game_param = ParamManager.load_param(0);
+        game_param = new GameParam();
+        ParamManager.save_param(0, game_param);
         game_state.initialize(game_param);
 
         float[] sign = new float[2] {1, -1};
@@ -75,6 +78,8 @@ public class GameController : MonoBehaviour {
 
         is_paused = false;
         is_finished = false;
+        time_begin = Time.time;
+        checkpoint_state = 0;
     }
     public void clear_level(){
         game_terrian.clear_level();
@@ -160,16 +165,23 @@ public class GameController : MonoBehaviour {
     public void brick_destroyed(){
         game_state.num_bricks--;
     }
+    public void ball_ignited(GameObject ball){
+        ball.GetComponent<Rigidbody2D>().velocity *= level_param.fireball_speed;
+    }
+
     private void shoot(int player_id){
         Debug.Log("Shoot " + player_id.ToString());
 
         var pos = player_item[player_id].launcher.transform.position;
-        var angle = game_state.player_state[player_id].launcher_angle;
-        float speed = player_id == 0 ? level_param.ball_speed : -level_param.ball_speed;
-        Vector2 velocity = new Vector2(-Mathf.Cos(angle), Mathf.Sin(angle)) * speed;
+
+        Func<Vector2> get_vec = () => {
+            var angle = game_state.player_state[player_id].launcher_angle;
+            float speed = player_id == 0 ? level_param.ball_speed : -level_param.ball_speed;
+            return new Vector2(-Mathf.Cos(angle), Mathf.Sin(angle)) * speed;
+        };
 
         StartCoroutine(ball_manager.spawn_sequence(
-            player_id, pos, velocity, game_state.player_state[player_id].num_balls, game_state.player_state[player_id]));
+            player_id, pos, get_vec, game_state.player_state[player_id].num_balls, game_state.player_state[player_id]));
         
         // TODO UI
     }
@@ -192,6 +204,14 @@ public class GameController : MonoBehaviour {
             ));
 
         }
+
+        if (checkpoint_state < level_param.launcher_cd_checkpoints.Count && 
+            Time.deltaTime - time_begin >= level_param.launcher_cd_checkpoints[checkpoint_state]){
+                foreach (var ps in game_state.player_state){
+                    ps.launch_cd = Mathf.Clamp(ps.launch_cd - level_param.launcher_cd_checkpoint_dec, level_param.launch_cd_min, Mathf.Infinity);
+                }
+                checkpoint_state++;
+            }
 
         if (Input.GetKey(KeyCode.Space)){
             shoot(0);

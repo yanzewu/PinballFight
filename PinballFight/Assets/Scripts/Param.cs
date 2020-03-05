@@ -26,7 +26,8 @@ public class LevelParam {
     public float launcher_min_angle = (float)Math.PI / 6;
     public float launcher_max_angle = (float)Math.PI * 5/12;
     public float launcher_angular_speed = (float)Math.PI/5;
-
+    public List<float> launcher_cd_checkpoints = new List<float>(){15, 30, 45, 60};
+    public float launcher_cd_checkpoint_dec = 0.3f;
     public int brick_durability = 9;
     
     

@@ -26,6 +26,6 @@ public class Ball : MonoBehaviour {
     }
 
     public void ignite(){
-        GetComponent<Rigidbody2D>().velocity *= 2;
+        controller.ball_ignited(this.gameObject);
     }
 }

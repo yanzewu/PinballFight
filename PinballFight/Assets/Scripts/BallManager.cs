@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,12 +17,12 @@ public class BallManager {
         this.colors = param.level_params[0].colors;
     }
 
-    public IEnumerator spawn_sequence(int player_id, Vector2 pos, Vector2 velocity, int number, GameState.SinglePlayerState state) {
+    public IEnumerator spawn_sequence(int player_id, Vector2 pos, Func<Vector2> velocity_gen, int number, GameState.SinglePlayerState state) {
 
         Debug.Log("Spawn" + number.ToString());
 
         for (int i = 0; i < number; i++){
-            spawn_single(player_id, pos, velocity);
+            spawn_single(player_id, pos, velocity_gen());
             state.num_balls--;
             yield return new WaitForSeconds(spawn_dt);
         }

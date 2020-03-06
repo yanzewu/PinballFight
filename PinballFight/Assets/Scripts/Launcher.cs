@@ -9,7 +9,6 @@ public class Launcher : MonoBehaviour {
     float angular_speed;
 
     private void Awake() {
-        GetComponent<SpriteHotLoader>().load();
     }
 
     public void set_param(LevelParam param, GameState.SinglePlayerState state){

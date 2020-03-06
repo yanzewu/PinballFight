@@ -47,7 +47,6 @@ public class Board : MonoBehaviour {
 
         controller = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
 
-        GetComponent<SpriteHotLoader>().load();
     }
 
     public void set_param(LevelParam param){

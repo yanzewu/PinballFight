@@ -9,12 +9,15 @@ public class GameController : MonoBehaviour {
     public class PlayerItem {
         public GameObject board;
         public GameObject launcher;
+        public GameObject ball_indicator;
+        public GameObject[] HPs;
     };
 
     GameParam game_param;
     LevelParam level_param;
     GameState game_state = new GameState();
 
+    OnGameUIManager ongame_ui_manager = new OnGameUIManager();
     TerrainManager game_terrian = new TerrainManager();
     BallManager ball_manager = new BallManager();
     BrickManager brick_manager = new BrickManager();
@@ -33,7 +36,7 @@ public class GameController : MonoBehaviour {
         // static resources (does not change by changing level)
 
         var item_prefab_list = new List<string>{
-            "Ball", "Board", "Launcher"
+            "Ball", "Board", "Launcher", "BallIndicator", "HP"
         };
 
         item_prefabs = new Dictionary<string, GameObject>();
@@ -46,15 +49,22 @@ public class GameController : MonoBehaviour {
         ParamManager.save_param(0, game_param);
         game_state.initialize(game_param);
 
-        float[] sign = new float[2] {1, -1};
+        ongame_ui_manager.initialize();
 
         for (int i = 0; i < 2; i++){
-            player_item[i].board = Instantiate(item_prefabs["Board"], item_prefabs["Board"].transform.position * sign[i], Quaternion.identity);
-            player_item[i].launcher = Instantiate(item_prefabs["Launcher"], item_prefabs["Launcher"].transform.position * sign[i], Quaternion.identity);
+            player_item[i].board = Instantiate(item_prefabs["Board"]);
+            player_item[i].launcher = Instantiate(item_prefabs["Launcher"]);
+            player_item[i].ball_indicator = Instantiate(item_prefabs["BallIndicator"]);
+            player_item[i].HPs = new GameObject[game_param.level_params[0].lives];
+            for (int j = 0; j < game_param.level_params[0].lives; j++){
+                player_item[i].HPs[j] = Instantiate(item_prefabs["HP"]);
+            }
+
+            ongame_ui_manager.init_player_ui(player_item[i], i);
         }
 
-        ball_manager.initialize(this, item_prefabs["Ball"], game_param);
-
+        ball_manager.initialize(this, item_prefabs["Ball"], ongame_ui_manager.init_ball_sprites(), game_param);
+        
         // prepare level
         reload_level(StatManager.get_state().current_level);
     }
@@ -72,9 +82,9 @@ public class GameController : MonoBehaviour {
         for (int i = 0; i < 2; i++){
             player_item[i].board.GetComponent<Board>().set_param(level_param);
             player_item[i].board.GetComponent<Board>().player_id = i;
-            player_item[i].board.GetComponent<SpriteRenderer>().color = level_param.colors[i];
             player_item[i].launcher.GetComponent<Launcher>().set_param(level_param, game_state.player_state[i]);
         }
+        ongame_ui_manager.reload(game_state);
 
         is_paused = false;
         is_finished = false;
@@ -148,6 +158,7 @@ public class GameController : MonoBehaviour {
     public void board_attacked(int player_id){
         Debug.Log("Board attacked");
         game_state.player_state[player_id].life--;
+        ongame_ui_manager.update_hp_ui(player_id);
 
         if (game_state.player_state[player_id].life < 0) {
             lose(player_id);
@@ -156,11 +167,13 @@ public class GameController : MonoBehaviour {
 
     public void ball_recovered(int player_id){
         game_state.player_state[player_id].num_balls++;
+        ongame_ui_manager.update_indicator_ui(player_id);
     }
     public void shoot_finished(int player_id){
         game_state.player_state[player_id].launch_tr = 
         game_state.player_state[player_id].launch_cd;
         game_state.player_state[player_id].num_balls += 1;
+        ongame_ui_manager.update_indicator_ui(player_id);
     }
     public void brick_destroyed(){
         game_state.num_bricks--;
@@ -175,6 +188,7 @@ public class GameController : MonoBehaviour {
         var pos = player_item[player_id].launcher.transform.position;
 
         Func<Vector2> get_vec = () => {
+            ongame_ui_manager.update_indicator_ui(player_id); // !! THIS IS A HACK!
             var angle = game_state.player_state[player_id].launcher_angle;
             float speed = player_id == 0 ? level_param.ball_speed : -level_param.ball_speed;
             return new Vector2(-Mathf.Cos(angle), Mathf.Sin(angle)) * speed;

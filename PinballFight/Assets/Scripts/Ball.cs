@@ -31,5 +31,6 @@ public class Ball : MonoBehaviour {
 
     public void ignite(){
         controller.ball_ignited(this.gameObject);
+        transform.GetChild(0).GetComponent<SpriteHotLoader>().load(player_id);
     }
 }

@@ -14,28 +14,23 @@ public class OnGameUIManager {
     }
     public void reload(GameState game_state){
         this.game_state = game_state;
+
+        for (int i = 0; i < game_state.player_state.Length; i++){
+            update_indicator_ui(i);
+            update_hp_ui(i);
+        }
     }
 
     public void init_player_ui(GameController.PlayerItem player_item, int player_id){
 
-        string board_filename = new string[2]{"tablet_blue", "tablet_red"}[player_id];
-        string launcher_filename = new string[2]{"Cannon_blue", "Cannon_red"}[player_id];
-        string ballindicator_filename = "Cannon_ballCount";
-
-
-        player_item.board.GetComponent<SpriteHotLoader>().filename =  board_filename;
-        player_item.launcher.GetComponent<SpriteHotLoader>().filename = launcher_filename;
-        player_item.ball_indicator.GetComponent<SpriteHotLoader>().filename = ballindicator_filename;
-
-        player_item.board.GetComponent<SpriteHotLoader>().load();
-        player_item.launcher.GetComponent<SpriteHotLoader>().load();
+        player_item.board.GetComponent<SpriteHotLoader>().load(player_id);
+        player_item.launcher.GetComponent<SpriteHotLoader>().load(player_id);
         if (player_id == 0){
             player_item.ball_indicator.GetComponent<SpriteHotLoader>().load();
         }
         foreach (var hp in player_item.HPs){
             hp.GetComponent<SpriteHotLoader>().load();
         }
-
 
         Func<Vector3, int, Vector3> convert_pos = (pos, i) => {
             return i == 0 ? pos : new Vector3(-pos.x, -pos.y, pos.z);
@@ -56,16 +51,7 @@ public class OnGameUIManager {
         }
 
         HPs[player_id] = player_item.HPs;
-
     }
-
-    public Sprite[] init_ball_sprites(){
-        return new Sprite[2]{
-            SpriteHotLoader.load_sprite("ball_blue", 100),
-            SpriteHotLoader.load_sprite("ball_red", 100)
-        };
-    }
-
 
     public void update_indicator_ui(int player_id){
         if (player_id != 0) return;

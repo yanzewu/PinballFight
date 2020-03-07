@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8754237581068147947}
   - component: {fileID: 2329390771250241304}
   - component: {fileID: 322651243687578552}
+  - component: {fileID: 5662736184019210365}
   m_Layer: 0
   m_Name: Brick
   m_TagString: Brick
@@ -28,8 +29,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6146476910175294324}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.7427896, y: 0.34109733, z: -0.7471668}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.07, y: 1.07, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -72,7 +73,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 0d2ce7cd79c44de4290cfc4d5b1b144e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4b5f69448d2ab0b48ad25290404742a3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -95,7 +96,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74acc5b2830d6214ea5f8a53dd93a6bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  brick_type: 0
+  is_triangular: 0
   durability: 0
 --- !u!61 &2329390771250241304
 BoxCollider2D:
@@ -114,14 +116,14 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.45, y: 0.45}
     newSize: {x: 0.5, y: 0.5}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5, y: 0.5}
+  m_Size: {x: 0.42, y: 0.42}
   m_EdgeRadius: 0
 --- !u!50 &322651243687578552
 Rigidbody2D:
@@ -144,3 +146,24 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &5662736184019210365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6146476910175294324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 835643ff30da20541ababc1be4c106b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  filename: 
+  pfu: 100
+  filenames:
+  - brick_plain
+  - brick_iron
+  - brick_boom!
+  - brick_ball
+  - brick_reel
+  - brick_hourglss

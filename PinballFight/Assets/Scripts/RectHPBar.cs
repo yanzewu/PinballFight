@@ -11,7 +11,7 @@ public class RectHPBar : MonoBehaviour {
     Vector2 size;
 
 
-    private void Awake() {
+    private void Start() {
         size = GetComponent<SpriteRenderer>().sprite.rect.size;
         empty_texture = ResManager.load_runtime_image("empty");
         
@@ -26,7 +26,7 @@ public class RectHPBar : MonoBehaviour {
         );
         ghost.transform.SetParent(this.gameObject.transform);
         if (front){
-            ghost.transform.localPosition = Vector3.zero;
+            ghost.transform.localPosition = new Vector3(0, 0, -0.01f);
         }
         else{
             ghost.transform.localPosition = new Vector3(0, 0, 0.01f);
@@ -36,7 +36,7 @@ public class RectHPBar : MonoBehaviour {
     public void set_hp(float hp){
         if (orientation == 0){
             ghost.transform.localPosition = new Vector3(
-                (-0.5f+hp/2) * size.y/100, 0f, ghost.transform.localPosition.z
+                (-0.5f+hp/2) * size.x/100, 0f, ghost.transform.localPosition.z
             );
             ghost.transform.localScale = new Vector3(hp, 1, 1);
         }

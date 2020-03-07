@@ -10,6 +10,10 @@ public class Ball : MonoBehaviour {
         controller = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
     }
 
+    private void Start() {
+        GetComponent<SpriteHotLoader>().load(player_id);
+    }
+
     private void OnCollisionEnter2D(Collision2D other) {
         if (other.gameObject.tag == "Softwall"){
             Destroy(this.gameObject);
@@ -21,7 +25,7 @@ public class Ball : MonoBehaviour {
             }
         }
         else if (other.gameObject.tag == "Brick"){
-            other.gameObject.GetComponent<Brick>().hitten();
+            other.gameObject.GetComponent<Brick>().hitten(player_id);
         }
     }
 

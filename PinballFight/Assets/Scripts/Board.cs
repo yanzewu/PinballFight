@@ -96,8 +96,7 @@ public class Board : MonoBehaviour {
     }
 
     public void set_active_length(float length){
-        // relative to 1
-        // TODO UI
+        GetComponent<RectHPBar>().set_hp(length);
     }
 
     private void Update() {

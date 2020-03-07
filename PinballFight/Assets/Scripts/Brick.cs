@@ -7,7 +7,8 @@ public class Brick : MonoBehaviour {
         BALL, ROLL, SANDGLASS, LIGHTNTING
     };
 
-    public BrickType type;
+    public BrickType brick_type = BrickType.NONE;
+    public bool is_triangular = false;
     public int durability;
     GameController controller;
 
@@ -17,19 +18,30 @@ public class Brick : MonoBehaviour {
         controller = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
     }
 
+    private void Start() {
+        if (is_triangular){
+            GetComponent<SpriteHotLoader>().load();
+        }
+        else{
+            GetComponent<SpriteHotLoader>().load((int)brick_type);
+        }
+    }
+
     public void set_param(LevelParam param){
         durability = param.brick_durability;
         update_ui();
     }
 
-    public void hitten(){
+    public void hitten(int player_id){
         // ! this will be overwritten by subclasses
+
+        if (brick_type == BrickType.IRON) return;
 
         durability--;
 
         if (durability == 0){
             Destroy(this.gameObject);
-            controller.brick_destroyed();
+            controller.brick_destroyed(brick_type, player_id, GetComponent<Rigidbody2D>().position);
         }
         else{
             update_ui();
@@ -37,7 +49,8 @@ public class Brick : MonoBehaviour {
     }
 
     public void update_ui(){
-
+        var sr = GetComponent<SpriteRenderer>();
+        sr.color = new Color(sr.color.r, sr.color.g, sr.color.b, durability / 9.0f);
     }
 
 }

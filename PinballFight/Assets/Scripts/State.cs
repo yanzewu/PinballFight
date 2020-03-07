@@ -17,6 +17,7 @@ public class GlobalState {
 public class GameState
 {
 
+    [Serializable]
     public class SinglePlayerState {
         public int life;
         public int board_color; // TODO set color

@@ -30,8 +30,9 @@ public class LevelParam {
     public float launcher_cd_checkpoint_dec = 0.3f;
     public int brick_durability = 9;
     
-    
-    // random generating parameters goes here.
+    public float[] brick_probabilities = new float[6]{
+        0.5f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f
+    };
 
     public int bounce_value_required = 5;
 

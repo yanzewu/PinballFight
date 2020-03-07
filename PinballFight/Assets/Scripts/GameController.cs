@@ -17,6 +17,12 @@ public class GameController : MonoBehaviour {
     LevelParam level_param;
     GameState game_state = new GameState();
 
+#if UNITY_EDITOR
+    public GameState game_state_display;
+    public LevelParam level_param_display;
+#endif
+
+    UIManager ui_manager = new UIManager();
     OnGameUIManager ongame_ui_manager = new OnGameUIManager();
     TerrainManager game_terrian = new TerrainManager();
     BallManager ball_manager = new BallManager();
@@ -44,11 +50,14 @@ public class GameController : MonoBehaviour {
             item_prefabs.Add(item_name, ResManager.load_prefab(item_name));
         }
 
-        //game_param = ParamManager.load_param(0);
-        game_param = new GameParam();
-        ParamManager.save_param(0, game_param);
+        game_param = ParamManager.load_param(0);
+        //game_param = new GameParam();
+        //ParamManager.save_param(0, game_param);
         game_state.initialize(game_param);
-
+#if UNITY_EDITOR
+        game_state_display = game_state;
+        level_param_display = game_param.level_params[0];
+#endif
         ongame_ui_manager.initialize();
 
         for (int i = 0; i < 2; i++){
@@ -63,8 +72,9 @@ public class GameController : MonoBehaviour {
             ongame_ui_manager.init_player_ui(player_item[i], i);
         }
 
-        ball_manager.initialize(this, item_prefabs["Ball"], ongame_ui_manager.init_ball_sprites(), game_param);
-        
+        ball_manager.initialize(this, item_prefabs["Ball"], game_param);
+        ui_manager.initialize();
+
         // prepare level
         reload_level(StatManager.get_state().current_level);
     }
@@ -79,6 +89,7 @@ public class GameController : MonoBehaviour {
         game_state.reload(level_param);
         brick_manager.reload(level_param);
         brick_manager.generate_map(game_terrian.get_grid());
+        ball_manager.reload();
         for (int i = 0; i < 2; i++){
             player_item[i].board.GetComponent<Board>().set_param(level_param);
             player_item[i].board.GetComponent<Board>().player_id = i;
@@ -109,6 +120,7 @@ public class GameController : MonoBehaviour {
         //GameObject.Find("GameController").GetComponent<InputManager>().discard_flag = true;
     }
     public void restart_game(){
+        resume_game();
         clear_level();
         reload_level(StatManager.get_state().current_level);
     }
@@ -117,28 +129,22 @@ public class GameController : MonoBehaviour {
         clear_level();
         SceneManager.LoadScene("Start");
     }
-    public void finish_level(){
+
+    private void lose(int player_id){
         Debug.Log("Current=" + StatManager.get_state().current_level.ToString() + "total=" + game_param.level_params.Count);
-        
+
+        ui_manager.on_gameover(player_id != 0);
+        pause_game();
         var g_state = StatManager.get_state();
-        g_state.current_level += 1;
+        // if (player_id != 0) g_state.current_level += 1; !! This is used when there are multiple levels
         if (g_state.current_level == game_param.level_params.Count){
             g_state.current_level = 0;
-            
-        }
-        else{
-            clear_level();
-            reload_level(g_state.current_level);
         }
         StatManager.save_stat();
     }
 
-    private void lose(int player_id){
-        finish_level();
-    }
-
     public void board_dragged(Vector2 pos, int player_id){
-        Debug.Log("Board dragged: " + pos.ToString());
+        //Debug.Log("Board dragged: " + pos.ToString());
         player_item[player_id].board.GetComponent<Board>().move_horizontal(pos.x);
     }
 
@@ -160,7 +166,7 @@ public class GameController : MonoBehaviour {
         game_state.player_state[player_id].life--;
         ongame_ui_manager.update_hp_ui(player_id);
 
-        if (game_state.player_state[player_id].life < 0) {
+        if (game_state.player_state[player_id].life == 0) {
             lose(player_id);
         }
     }
@@ -175,9 +181,28 @@ public class GameController : MonoBehaviour {
         game_state.player_state[player_id].num_balls += 1;
         ongame_ui_manager.update_indicator_ui(player_id);
     }
-    public void brick_destroyed(){
+    public void brick_destroyed(Brick.BrickType brick_type, int player_id, Vector2 pos){
         game_state.num_bricks--;
+        on_skill_effect(brick_type, player_id, pos);
     }
+
+    public void on_skill_effect(Brick.BrickType brick_type, int player_id, Vector2 pos){
+        Debug.Log("Skill used: " + brick_type.ToString());
+
+        var ps = game_state.player_state[player_id];
+        switch(brick_type){
+            case Brick.BrickType.EXPLOSION: brick_manager.detonate(player_id, pos); break;
+            case Brick.BrickType.BALL: ps.num_balls++; break;
+            case Brick.BrickType.ROLL: ps.active_bounce_cd = Mathf.Clamp(
+                ps.active_bounce_cd - level_param.roll_bounce_cd_dec, level_param.bounce_cd_min, Mathf.Infinity); 
+                break;
+            case Brick.BrickType.SANDGLASS: ps.launch_cd = Mathf.Clamp(
+                ps.launch_cd - level_param.sandglass_launch_cd_dec, level_param.launch_cd_min, Mathf.Infinity); 
+                break;
+            default: break;
+        }
+    }
+
     public void ball_ignited(GameObject ball){
         ball.GetComponent<Rigidbody2D>().velocity *= level_param.fireball_speed;
     }
@@ -205,16 +230,17 @@ public class GameController : MonoBehaviour {
         if (is_paused) return;
 
         for (int i = 0; i < 2; i++){
-            game_state.player_state[i].launch_tr -= Time.deltaTime;
-            game_state.player_state[i].active_bounce_tr -= Time.deltaTime;
+            var ps = game_state.player_state[i];
+            ps.launch_tr -= Time.deltaTime;
+            ps.active_bounce_tr = Mathf.Clamp(ps.active_bounce_tr - Time.deltaTime, 0, Mathf.Infinity);
 
-            if (game_state.player_state[i].launch_tr <= 0){
+            if (ps.launch_tr <= 0){
                 shoot(i);
-                game_state.player_state[i].launch_tr = Mathf.Infinity;
+                ps.launch_tr = Mathf.Infinity;
             }
 
             player_item[i].board.GetComponent<Board>().set_active_length(Mathf.Clamp01(
-                game_state.player_state[i].active_bounce_tr / game_state.player_state[i].active_bounce_cd
+                ps.active_bounce_tr / ps.active_bounce_cd
             ));
 
         }

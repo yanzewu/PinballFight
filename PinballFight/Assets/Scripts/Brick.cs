@@ -27,11 +27,6 @@ public class Brick : MonoBehaviour {
         }
     }
 
-    public void set_param(LevelParam param){
-        durability = param.brick_durability;
-        update_ui();
-    }
-
     public void hitten(int player_id){
         // ! this will be overwritten by subclasses
 

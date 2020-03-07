@@ -3,7 +3,7 @@ using UnityEngine;
 public class Ball : MonoBehaviour {
 
     public int player_id;
-
+    public bool response_to_brick = true;
     GameController controller;
 
     private void Awake() {
@@ -24,7 +24,7 @@ public class Ball : MonoBehaviour {
                 // 
             }
         }
-        else if (other.gameObject.tag == "Brick"){
+        else if (other.gameObject.tag == "Brick" && response_to_brick){
             other.gameObject.GetComponent<Brick>().hitten(player_id);
         }
     }

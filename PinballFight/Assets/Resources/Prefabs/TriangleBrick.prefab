@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -8486437236599980958}
   m_Layer: 0
   m_Name: TriangleBrick
-  m_TagString: Untagged
+  m_TagString: Brick
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -145,7 +145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74acc5b2830d6214ea5f8a53dd93a6bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  brick_type: 0
   is_triangular: 1
   durability: 0
 --- !u!114 &-8486437236599980958

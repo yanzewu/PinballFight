@@ -23,6 +23,12 @@ public class BallManager {
         }
     }
 
+    public void ignore_bricks(GameObject ball){
+        foreach (var b in GameObject.FindGameObjectsWithTag("Brick")){
+            Physics2D.IgnoreCollision(b.GetComponent<Collider2D>(), ball.GetComponent<CircleCollider2D>());
+        }
+    }
+
     public IEnumerator spawn_sequence(int player_id, Vector2 pos, Func<Vector2> velocity_gen, int number, GameState.SinglePlayerState state) {
 
         Debug.Log("Spawn" + number.ToString());

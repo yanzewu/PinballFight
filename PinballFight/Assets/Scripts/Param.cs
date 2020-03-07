@@ -28,7 +28,10 @@ public class LevelParam {
     public float launcher_angular_speed = (float)Math.PI/5;
     public List<float> launcher_cd_checkpoints = new List<float>(){15, 30, 45, 60};
     public float launcher_cd_checkpoint_dec = 0.3f;
-    public int brick_durability = 9;
+    public float[] brick_durability_probs = new float[9]{
+        0.03917f, 0.06458f, 0.09526f, 0.12576f, 0.14857f,
+        0.15706f, 0.14857f, 0.12576f, 0.09526f
+    };
     
     public float[] brick_probabilities = new float[6]{
         0.5f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f

@@ -3,22 +3,23 @@ using UnityEngine;
 
 public class BrickManager {
 
-    int default_durability;
+    float[] durability_probs;
     float[] probabilites;
     float grid_size = 0.9375f;
 
     public void reload(LevelParam param){
-        default_durability = param.brick_durability;
         probabilites = param.brick_probabilities;
+        durability_probs = param.brick_durability_probs;
     }
 
     public void generate_map(GameObject grid){
 
         var cumsum_prob = _cumsum(probabilites);
+        var durability_prob = _cumsum(durability_probs);
         foreach (Transform child in grid.transform){
             var br = child.gameObject.GetComponent<Brick>();
-            br.durability = default_durability;
             br.brick_type = (Brick.BrickType)_pick_idx(Random.Range(0f, 1f), cumsum_prob);
+            br.durability = _pick_idx(Random.Range(0f, 1f), durability_prob) + 1;
         }
     }
 

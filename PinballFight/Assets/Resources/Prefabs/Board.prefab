@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 641458819951821168}
   - component: {fileID: 626415071586203723}
   - component: {fileID: 4353062443193486755}
+  - component: {fileID: 6197176130385720539}
   m_Layer: 0
   m_Name: Board
   m_TagString: Untagged
@@ -107,9 +108,9 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 626415071586203726}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: a10e43ce0f7b77243b35d8b8402f16e9, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -219,3 +220,19 @@ MonoBehaviour:
   orientation: 0
   padding: {x: 0.1, y: 0.1}
   front: 1
+--- !u!70 &6197176130385720539
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 626415071586203726}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 0.92, y: 0.09}
+  m_Direction: 1

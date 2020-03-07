@@ -192,7 +192,7 @@ public class GameController : MonoBehaviour {
         var ps = game_state.player_state[player_id];
         switch(brick_type){
             case Brick.BrickType.EXPLOSION: brick_manager.detonate(player_id, pos); break;
-            case Brick.BrickType.BALL: ps.num_balls++; break;
+            case Brick.BrickType.BALL: {ps.num_balls++; ongame_ui_manager.update_indicator_ui(player_id);}; break;
             case Brick.BrickType.ROLL: ps.active_bounce_cd = Mathf.Clamp(
                 ps.active_bounce_cd - level_param.roll_bounce_cd_dec, level_param.bounce_cd_min, Mathf.Infinity); 
                 break;
@@ -204,7 +204,16 @@ public class GameController : MonoBehaviour {
     }
 
     public void ball_ignited(GameObject ball){
-        ball.GetComponent<Rigidbody2D>().velocity *= level_param.fireball_speed;
+        var b = ball.GetComponent<Ball>();
+        var rb = ball.GetComponent<Rigidbody2D>();
+        if (!b.response_to_brick) return;   // avoid multiple acceleration
+
+        var other_pid = 1 - b.player_id;
+        var direction = (player_item[other_pid].board.GetComponent<Rigidbody2D>().position - rb.position).normalized;
+        b.response_to_brick = false;
+        ball_manager.ignore_bricks(ball);
+        rb.velocity = level_param.fireball_speed * level_param.ball_speed * direction;
+        Debug.Log("Ball Ignited with velocity=" + rb.velocity.ToString());
     }
 
     private void shoot(int player_id){

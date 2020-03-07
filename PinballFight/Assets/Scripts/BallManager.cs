@@ -17,7 +17,7 @@ public class BallManager {
         this.colors = param.level_params[0].colors;
     }
 
-    public void reload(){
+    public void clear(){
         foreach (var b in GameObject.FindGameObjectsWithTag("Ball")){
             GameObject.Destroy(b.gameObject);
         }

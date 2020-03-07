@@ -12,6 +12,8 @@ public class UIManager {
     public void initialize(){
         controller = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
 
+        GameObject.Find("BtnQuit").GetComponent<Button>().onClick.AddListener(this.on_click_quit);
+        GameObject.Find("BtnRestart").GetComponent<Button>().onClick.AddListener(this.on_click_restart);
         GameObject.Find("BtnRestart2").GetComponent<Button>().onClick.AddListener(this.on_click_restart);
 
         gameover_panel = GameObject.Find("PanelGameOver");
@@ -36,6 +38,10 @@ public class UIManager {
 
     public void on_click_pause(){
 
+    }
+
+    public void on_click_quit(){
+        controller.exit_game();
     }
 
 }

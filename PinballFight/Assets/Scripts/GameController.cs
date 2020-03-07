@@ -89,10 +89,11 @@ public class GameController : MonoBehaviour {
         game_state.reload(level_param);
         brick_manager.reload(level_param);
         brick_manager.generate_map(game_terrian.get_grid());
-        ball_manager.reload();
+        
         for (int i = 0; i < 2; i++){
             player_item[i].board.GetComponent<Board>().set_param(level_param);
             player_item[i].board.GetComponent<Board>().player_id = i;
+            board_dragged(Vector2.zero, i);
             player_item[i].launcher.GetComponent<Launcher>().set_param(level_param, game_state.player_state[i]);
         }
         ongame_ui_manager.reload(game_state);
@@ -104,6 +105,7 @@ public class GameController : MonoBehaviour {
     }
     public void clear_level(){
         game_terrian.clear_level();
+        ball_manager.clear();
 
         foreach (var item in ongame_items){
             Destroy(item);
@@ -127,7 +129,7 @@ public class GameController : MonoBehaviour {
     public void exit_game(){
         Debug.Log("exit");
         clear_level();
-        SceneManager.LoadScene("Start");
+        SceneManager.LoadScene("Entry");
     }
 
     private void lose(int player_id){

@@ -18,6 +18,12 @@ public class UIManager {
 
         gameover_panel = GameObject.Find("PanelGameOver");
         gameover_panel.SetActive(false);
+
+        // aspect
+        if (Screen.height > 16/9.0f * Screen.width){
+            Camera.main.orthographicSize = 5.0f * Screen.height / (float)Screen.width * (9/16.0f);
+        }
+        
     }
 
 

@@ -24,8 +24,7 @@ public class Board : MonoBehaviour {
     private float bound = 2.8125f;
 
     private void Awake() {
-        width = GetComponent<BoxCollider2D>().size.x;
-        y0 = transform.position.y;
+        width = GetComponent<BoxCollider2D>().size.x;        
 
         var trigger = GetComponent<EventTrigger>();
 
@@ -47,6 +46,10 @@ public class Board : MonoBehaviour {
 
         controller = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
 
+    }
+
+    private void Start() {
+        y0 = transform.position.y;
     }
 
     public void set_param(LevelParam param){

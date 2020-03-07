@@ -265,7 +265,7 @@ public class GameController : MonoBehaviour {
             }
 
         if (Input.GetKey(KeyCode.Space)){
-            shoot(0);
+            board_touched(0);
         }
 
     }

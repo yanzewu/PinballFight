@@ -19,12 +19,7 @@ public class Brick : MonoBehaviour {
     }
 
     private void Start() {
-        if (is_triangular){
-            GetComponent<SpriteHotLoader>().load();
-        }
-        else{
-            GetComponent<SpriteHotLoader>().load((int)brick_type);
-        }
+        GetComponent<SpriteHotLoader>().load((int)brick_type);
     }
 
     public void hitten(int player_id){

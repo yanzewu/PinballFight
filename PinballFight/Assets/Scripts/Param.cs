@@ -36,6 +36,7 @@ public class LevelParam {
     public float[] brick_probabilities = new float[6]{
         0.5f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f
     };
+    public float triangluar_iron_brick_probability = 0.4f;
 
     public int bounce_value_required = 5;
 

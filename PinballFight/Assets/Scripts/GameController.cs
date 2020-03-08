@@ -94,7 +94,7 @@ public class GameController : MonoBehaviour {
             player_item[i].board.GetComponent<Board>().set_param(level_param);
             player_item[i].board.GetComponent<Board>().player_id = i;
             board_dragged(Vector2.zero, i);
-            player_item[i].launcher.GetComponent<Launcher>().set_param(level_param, game_state.player_state[i]);
+            player_item[i].launcher.GetComponent<Launcher>().set_param(level_param, game_state.player_state[i], i);
         }
         ongame_ui_manager.reload(game_state);
 
@@ -221,7 +221,7 @@ public class GameController : MonoBehaviour {
     private void shoot(int player_id){
         Debug.Log("Shoot " + player_id.ToString());
 
-        var pos = player_item[player_id].launcher.transform.position;
+        Func<Vector2> get_pos = () => player_item[player_id].launcher.transform.GetChild(0).transform.position;
 
         Func<Vector2> get_vec = () => {
             ongame_ui_manager.update_indicator_ui(player_id); // !! THIS IS A HACK!
@@ -231,7 +231,7 @@ public class GameController : MonoBehaviour {
         };
 
         StartCoroutine(ball_manager.spawn_sequence(
-            player_id, pos, get_vec, game_state.player_state[player_id].num_balls, game_state.player_state[player_id]));
+            player_id, get_pos, get_vec, game_state.player_state[player_id].num_balls, game_state.player_state[player_id]));
         
         // TODO UI
     }

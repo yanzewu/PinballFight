@@ -29,12 +29,12 @@ public class BallManager {
         }
     }
 
-    public IEnumerator spawn_sequence(int player_id, Vector2 pos, Func<Vector2> velocity_gen, int number, GameState.SinglePlayerState state) {
+    public IEnumerator spawn_sequence(int player_id, Func<Vector2> pos_gen, Func<Vector2> velocity_gen, int number, GameState.SinglePlayerState state) {
 
         Debug.Log("Spawn" + number.ToString());
 
         for (int i = 0; i < number; i++){
-            spawn_single(player_id, pos, velocity_gen());
+            spawn_single(player_id, pos_gen(), velocity_gen());
             state.num_balls--;
             yield return new WaitForSeconds(spawn_dt);
         }

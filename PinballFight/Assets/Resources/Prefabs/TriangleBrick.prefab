@@ -160,6 +160,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 835643ff30da20541ababc1be4c106b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  filename: brick_triangle
+  filename: 
   pfu: 96
-  filenames: []
+  filenames:
+  - brick_triangle
+  - brick_triangle

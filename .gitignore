@@ -2,7 +2,11 @@
 
 [Rr]eleases/
 [Aa]ssets/Exclude/
+[Aa]ssets/Exclude.meta
 .vscode/
+
+# Mac
+.DS_Store
 
 # This .gitignore file should be placed at the root of your Unity project directory
 #

@@ -1,8 +1,8 @@
 # Custom
 
 [Rr]eleases/
-[Aa]ssets/Exclude/
-[Aa]ssets/Exclude.meta
+Exclude/
+Exclude.meta
 .vscode/
 
 # Mac

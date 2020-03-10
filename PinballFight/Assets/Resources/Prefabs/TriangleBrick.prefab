@@ -73,7 +73,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 0ce56d856a2dec947a937846817d79bb, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d5fd26a6d784c8841b2705648b777e65, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -163,5 +163,9 @@ MonoBehaviour:
   filename: 
   pfu: 96
   filenames:
+  - brick_triangle_left
   - brick_triangle
+  - brick_triangle_left
   - brick_triangle
+  - brick_triangle_upleft
+  - brick_triangle_upright

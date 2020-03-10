@@ -29,6 +29,14 @@ public class BallManager {
         }
     }
 
+    public void acclerate_all(int player_id, float ratio){
+        foreach (var b in GameObject.FindGameObjectsWithTag("Ball")){
+            if (b.GetComponent<Ball>().player_id == player_id){
+                b.GetComponent<Rigidbody2D>().velocity *= ratio;
+            }
+        }
+    }
+
     public IEnumerator spawn_sequence(int player_id, Func<Vector2> pos_gen, Func<Vector2> velocity_gen, int number, GameState.SinglePlayerState state) {
 
         Debug.Log("Spawn" + number.ToString());

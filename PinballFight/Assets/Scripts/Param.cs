@@ -33,8 +33,8 @@ public class LevelParam {
         0.15706f, 0.14857f, 0.12576f, 0.09526f
     };
     
-    public float[] brick_probabilities = new float[6]{
-        0.5f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f
+    public float[] brick_probabilities = new float[7]{
+        0.5f, 0.1f, 0.1f, 0.1f, 0.1f, 0, 0.1f
     };
     public float triangluar_iron_brick_probability = 0.4f;
 
@@ -44,7 +44,7 @@ public class LevelParam {
 
     public float roll_bounce_cd_dec = 0.5f;
     public float sandglass_launch_cd_dec = 0.3f;
-
+    public float lightening_accelerate_ratio = 1.2f;
     public float championA_bounce_cd_dec = 1.0f;
     public float championB_launch_cd_dec = 0.6f;
     public int championC_bounce_value_required = 4;

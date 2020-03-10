@@ -26,7 +26,7 @@ public class BrickManager {
             br.brick_type = (Brick.BrickType)_pick_idx(Random.Range(0f, 1f), cumsum_prob);
             br.durability = _pick_idx(Random.Range(0f, 1f), durability_prob) + 1;
         }*/
-        grid_size = grid.GetComponent<Grid>().cellSize.x;
+        grid_size = grid.GetComponent<Grid>().cellSize.x / 2;
         generate_map_advanced(grid, 2);
     }
 

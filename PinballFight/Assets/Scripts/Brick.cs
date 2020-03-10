@@ -11,15 +11,28 @@ public class Brick : MonoBehaviour {
     public bool is_triangular = false;
     public int durability;
     GameController controller;
+    SpriteHotLoader crack_sh;
 
     private void Awake() {
         // load 9 graphs
 
         controller = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+        if (is_triangular) return;
+        crack_sh = transform.GetChild(0).GetComponent<SpriteHotLoader>();
     }
 
     private void Start() {
-        GetComponent<SpriteHotLoader>().load((int)brick_type);
+        if (is_triangular){
+            var a = this.transform.eulerAngles.z;
+            if (Mathf.Abs(a) < 0.01f) GetComponent<SpriteHotLoader>().load(2);
+            else if (Mathf.Abs(a - 90) < 0.01f) GetComponent<SpriteHotLoader>().load(3);
+            else if (Mathf.Abs(a - 180) < 0.01f) GetComponent<SpriteHotLoader>().load(4);
+            else if (Mathf.Abs(a - 270) < 0.01f) GetComponent<SpriteHotLoader>().load(5);
+        }
+        else{
+            GetComponent<SpriteHotLoader>().load((int)brick_type);
+        }
+        update_ui();
     }
 
     public void hitten(int player_id){
@@ -39,8 +52,20 @@ public class Brick : MonoBehaviour {
     }
 
     public void update_ui(){
-        var sr = GetComponent<SpriteRenderer>();
-        sr.color = new Color(sr.color.r, sr.color.g, sr.color.b, durability / 9.0f);
+        if (is_triangular) return;
+        if (durability == 9) return;
+        else if (durability >= 7){
+            crack_sh.load(2);
+        }
+        else if (durability >= 4){
+            crack_sh.load(1);
+        }
+        else {
+            crack_sh.load(0);
+        }
+
+        //var sr = GetComponent<SpriteRenderer>();
+        //sr.color = new Color(sr.color.r, sr.color.g, sr.color.b, durability / 9.0f);
     }
 
 }

@@ -24,6 +24,7 @@ public class GameController : MonoBehaviour {
 
     UIManager ui_manager = new UIManager();
     OnGameUIManager ongame_ui_manager = new OnGameUIManager();
+    AnimationManager animation_manager = new AnimationManager();
     TerrainManager game_terrian = new TerrainManager();
     BallManager ball_manager = new BallManager();
     BrickManager brick_manager = new BrickManager();
@@ -74,6 +75,7 @@ public class GameController : MonoBehaviour {
 
         ball_manager.initialize(this, item_prefabs["Ball"], game_param);
         ui_manager.initialize();
+        animation_manager.initialize();
 
         // prepare level
         reload_level(StatManager.get_state().current_level);
@@ -168,6 +170,8 @@ public class GameController : MonoBehaviour {
         game_state.player_state[player_id].life--;
         ongame_ui_manager.update_hp_ui(player_id);
 
+        animation_manager.play_animation_at("Explosion", player_item[player_id].board.transform.position);
+
         if (game_state.player_state[player_id].life == 0) {
             lose(player_id);
         }
@@ -193,7 +197,8 @@ public class GameController : MonoBehaviour {
 
         var ps = game_state.player_state[player_id];
         switch(brick_type){
-            case Brick.BrickType.EXPLOSION: brick_manager.detonate(player_id, pos); break;
+            case Brick.BrickType.EXPLOSION: { animation_manager.play_animation_at("Explosion", pos);
+                 brick_manager.detonate(player_id, pos); break;}
             case Brick.BrickType.BALL: {ps.num_balls++; ongame_ui_manager.update_indicator_ui(player_id);}; break;
             case Brick.BrickType.ROLL: ps.active_bounce_cd = Mathf.Clamp(
                 ps.active_bounce_cd - level_param.roll_bounce_cd_dec, level_param.bounce_cd_min, Mathf.Infinity); 
@@ -201,6 +206,7 @@ public class GameController : MonoBehaviour {
             case Brick.BrickType.SANDGLASS: ps.launch_cd = Mathf.Clamp(
                 ps.launch_cd - level_param.sandglass_launch_cd_dec, level_param.launch_cd_min, Mathf.Infinity); 
                 break;
+            case Brick.BrickType.LIGHTNTING: ball_manager.acclerate_all(player_id, level_param.lightening_accelerate_ratio); break;
             default: break;
         }
     }
@@ -264,9 +270,16 @@ public class GameController : MonoBehaviour {
                 checkpoint_state++;
             }
 
-        if (Input.GetKey(KeyCode.Space)){
+        // For tests only!
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.Space)){
             board_touched(0);
         }
-
+        for (int i = 0; i < 6; i++){
+            if (Input.GetKeyDown(KeyCode.Alpha1+i)){
+                on_skill_effect((Brick.BrickType)(i+1), 0, Vector2.zero);
+            }
+        }
+#endif
     }
 }

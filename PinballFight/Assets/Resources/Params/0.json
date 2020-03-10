@@ -2,14 +2,14 @@
     "level_params": [
         {
             "lives": 3,
-            "ball_speed": 2.5,
+            "ball_speed": 3.5,
             "bounce_cd_init": 6.0,
             "bounce_cd_min": 3.0,
             "bounce_dy": 0.3125,
             "bounce_dt": 0.10000000149011612,
             "bounce_dt2": 0.10000000149011612,
             "touch_dt": 0.20000000298023225,
-            "fireball_speed": 2.0,
+            "fireball_speed": 3.0,
             "launch_cd_init": 5.0,
             "launch_cd_min": 2.0,
             "launch_rate": 20.0,

@@ -20,7 +20,7 @@ public class GameState
     [Serializable]
     public class SinglePlayerState {
         public int life;
-        public int board_color; // TODO set color
+        public int board_color;
         public float active_bounce_cd;
         public float active_bounce_tr;
         public float launch_cd;

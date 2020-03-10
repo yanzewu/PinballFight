@@ -161,7 +161,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   filename: 
-  pfu: 100
+  pfu: 96
   filenames:
   - tablet_blue
   - tablet_red
@@ -218,8 +218,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   color: {r: 1, g: 1, b: 1, a: 0.63529414}
   orientation: 0
-  padding: {x: 0.1, y: 0.1}
+  padding: {x: 0.01, y: 0}
   front: 1
+  pfu: 96
+  filename: empty
 --- !u!70 &6197176130385720539
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

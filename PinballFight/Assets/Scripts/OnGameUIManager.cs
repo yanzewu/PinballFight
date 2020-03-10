@@ -27,6 +27,7 @@ public class OnGameUIManager {
         player_item.launcher.GetComponent<SpriteHotLoader>().load(player_id);
         if (player_id == 0){
             player_item.ball_indicator.GetComponent<SpriteHotLoader>().load();
+            player_item.bouncevalue_indicator.GetComponent<SpriteHotLoader>().load();   // TODO bvr = 4
         }
         foreach (var hp in player_item.HPs){
             hp.GetComponent<SpriteHotLoader>().load();
@@ -39,7 +40,7 @@ public class OnGameUIManager {
 
         player_item.board.transform.position = convert_pos(player_item.board.transform.position, player_id);
         player_item.launcher.transform.position = convert_pos(player_item.launcher.transform.position, player_id);
-        player_item.ball_indicator.transform.position = convert_pos(player_item.ball_indicator.transform.position, player_id);
+        
         
         for (int i = 0; i < player_item.HPs.Length; i++){
             player_item.HPs[i].transform.position = convert_pos(player_item.HPs[i].transform.position, player_id);

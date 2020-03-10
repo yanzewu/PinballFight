@@ -13,6 +13,7 @@ public class UIManager {
         controller = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
 
         GameObject.Find("BtnQuit").GetComponent<Button>().onClick.AddListener(this.on_click_quit);
+        GameObject.Find("BtnQuit2").GetComponent<Button>().onClick.AddListener(this.on_click_quit);
         GameObject.Find("BtnRestart").GetComponent<Button>().onClick.AddListener(this.on_click_restart);
         GameObject.Find("BtnRestart2").GetComponent<Button>().onClick.AddListener(this.on_click_restart);
 

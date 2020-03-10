@@ -10,6 +10,7 @@ public class GameController : MonoBehaviour {
         public GameObject board;
         public GameObject launcher;
         public GameObject ball_indicator;
+        public GameObject bouncevalue_indicator;
         public GameObject[] HPs;
     };
 
@@ -43,7 +44,7 @@ public class GameController : MonoBehaviour {
         // static resources (does not change by changing level)
 
         var item_prefab_list = new List<string>{
-            "Ball", "Board", "Launcher", "BallIndicator", "HP"
+            "Ball", "Board", "Launcher", "BallIndicator", "HP", "BounceValueIndicator"
         };
 
         item_prefabs = new Dictionary<string, GameObject>();
@@ -64,7 +65,11 @@ public class GameController : MonoBehaviour {
         for (int i = 0; i < 2; i++){
             player_item[i].board = Instantiate(item_prefabs["Board"]);
             player_item[i].launcher = Instantiate(item_prefabs["Launcher"]);
-            player_item[i].ball_indicator = Instantiate(item_prefabs["BallIndicator"]);
+            if (i == 0){
+                player_item[i].ball_indicator = Instantiate(item_prefabs["BallIndicator"]);
+                player_item[i].bouncevalue_indicator = Instantiate(item_prefabs["BounceValueIndicator"]);
+            }
+
             player_item[i].HPs = new GameObject[game_param.level_params[0].lives];
             for (int j = 0; j < game_param.level_params[0].lives; j++){
                 player_item[i].HPs[j] = Instantiate(item_prefabs["HP"]);
@@ -130,6 +135,7 @@ public class GameController : MonoBehaviour {
     }
     public void exit_game(){
         Debug.Log("exit");
+        resume_game();
         clear_level();
         SceneManager.LoadScene("Entry");
     }
@@ -189,6 +195,7 @@ public class GameController : MonoBehaviour {
     }
     public void brick_destroyed(Brick.BrickType brick_type, int player_id, Vector2 pos){
         game_state.num_bricks--;
+        bounce_value_obtained(player_id);
         on_skill_effect(brick_type, player_id, pos);
     }
 
@@ -224,6 +231,19 @@ public class GameController : MonoBehaviour {
         Debug.Log("Ball Ignited with velocity=" + rb.velocity.ToString());
     }
 
+    public void bounce_value_obtained(int player_id){
+        game_state.player_state[player_id].bounce_value++;
+        if (game_state.player_state[player_id].bounce_value == game_state.player_state[0].bounce_value_required){
+            game_state.player_state[player_id].bounce_value = 0;
+            on_skill_effect(Brick.BrickType.SANDGLASS, player_id, Vector2.zero);
+        }
+        if (player_id == 0){
+            player_item[0].bouncevalue_indicator.GetComponent<BounceValueIndicator>().set_length(
+                (float)game_state.player_state[0].bounce_value / game_state.player_state[0].bounce_value_required
+            );
+        }
+    }
+
     private void shoot(int player_id){
         Debug.Log("Shoot " + player_id.ToString());
 
@@ -238,8 +258,6 @@ public class GameController : MonoBehaviour {
 
         StartCoroutine(ball_manager.spawn_sequence(
             player_id, get_pos, get_vec, game_state.player_state[player_id].num_balls, game_state.player_state[player_id]));
-        
-        // TODO UI
     }
 
     private void Update()

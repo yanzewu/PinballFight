@@ -118,6 +118,7 @@ public class GameController : MonoBehaviour {
             Destroy(item);
         }
         ongame_items.Clear();
+        animation_manager.clear();
     }
     public void pause_game(){
         Time.timeScale = 0;

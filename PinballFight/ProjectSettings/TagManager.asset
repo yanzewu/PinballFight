@@ -8,6 +8,7 @@ TagManager:
   - Softwall
   - Ball
   - Brick
+  - Animation
   layers:
   - Default
   - TransparentFX

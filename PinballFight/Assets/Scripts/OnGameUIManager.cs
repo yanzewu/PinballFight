@@ -32,6 +32,9 @@ public class OnGameUIManager {
         foreach (var hp in player_item.HPs){
             hp.GetComponent<SpriteHotLoader>().load();
         }
+        var champion = player_item.board.transform.GetChild(0);
+        champion.GetComponent<SpriteHotLoader>().load(player_id + StatManager.get_state().champion[player_id] * 2);
+
 
         Func<Vector3, int, Vector3> convert_pos = (pos, i) => {
             return i == 0 ? pos : new Vector3(-pos.x, -pos.y, pos.z);
@@ -40,7 +43,7 @@ public class OnGameUIManager {
 
         player_item.board.transform.position = convert_pos(player_item.board.transform.position, player_id);
         player_item.launcher.transform.position = convert_pos(player_item.launcher.transform.position, player_id);
-        
+        champion.localPosition = convert_pos(champion.localPosition, player_id);
         
         for (int i = 0; i < player_item.HPs.Length; i++){
             player_item.HPs[i].transform.position = convert_pos(player_item.HPs[i].transform.position, player_id);

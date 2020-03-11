@@ -69,14 +69,16 @@ public class Board : MonoBehaviour {
 
     private void on_pointup(PointerEventData data){
         if (Time.time - touch_start < touch_dt){
-            if (moving_status == 0){
-                controller.board_touched(player_id);
-            }
+            controller.board_touched(player_id);
         }
     }
 
     private void on_pointdrag(PointerEventData data){
         controller.board_dragged(Camera.main.ScreenToWorldPoint(data.position), player_id);
+    }
+
+    public bool is_activatable(){
+        return moving_status == 0;
     }
 
     public void activate(){
@@ -86,9 +88,10 @@ public class Board : MonoBehaviour {
 
     public void move_horizontal(float x){
         float target = Mathf.Clamp(x, -bound + width/2, bound - width/2);
-        transform.position = new Vector3(
+        GetComponent<Rigidbody2D>().MovePosition(
+        new Vector3(
             target, transform.position.y, transform.position.z
-        );
+        ));
     }
 
     public void hitten(){

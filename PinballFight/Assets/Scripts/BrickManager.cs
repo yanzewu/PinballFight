@@ -36,11 +36,16 @@ public class BrickManager {
         List<(GameObject, Brick, float)> up_half = new List<(GameObject, Brick, float)>();
         List<(GameObject, Brick, float)> mid_half = new List<(GameObject, Brick, float)>();
 
+        var c_prob = _cumsum(durability_probs);
+
         foreach (Transform child in grid.transform){
             Brick b = child.gameObject.GetComponent<Brick>();
             if (b.is_triangular) {
                 if (UnityEngine.Random.Range(0f, 1f) < triangluar_iron_brick_probability){
                     b.brick_type = Brick.BrickType.IRON;
+                }
+                else{
+                    b.durability = _pick_idx(UnityEngine.Random.Range(0f, 1f), c_prob) + 1;
                 }
                 continue;
             }

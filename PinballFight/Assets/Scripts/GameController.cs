@@ -161,8 +161,9 @@ public class GameController : MonoBehaviour {
 
     public void board_touched(int player_id){
         Debug.Log("Board touched");
-        if (game_state.player_state[player_id].active_bounce_tr <= 0){
-            player_item[player_id].board.GetComponent<Board>().activate();
+        var b = player_item[player_id].board.GetComponent<Board>();
+        if (game_state.player_state[player_id].active_bounce_tr <= 0 && b.is_activatable()){
+            b.activate();
             game_state.player_state[player_id].active_bounce_tr = Mathf.Infinity;
         }
     }

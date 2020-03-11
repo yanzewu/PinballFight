@@ -54,6 +54,7 @@ public class Brick : MonoBehaviour {
 
     public void update_ui(){
         if (is_triangular) return;
+        if (brick_type == BrickType.IRON) return;
         if (durability == 9) return;
         else if (durability >= 7){
             crack_sh.load(2);

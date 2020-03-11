@@ -101,7 +101,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.45, y: 0.45}
+    oldSize: {x: 0.44, y: 0.44}
     newSize: {x: 0.45, y: 0.45}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -165,7 +165,9 @@ MonoBehaviour:
   filenames:
   - brick_triangle_left
   - brick_triangle
-  - brick_triangle_left
-  - brick_triangle
   - brick_triangle_upleft
   - brick_triangle_upright
+  - iron_triangle4
+  - iron_triangle
+  - iron_triangle2
+  - iron_triangle3

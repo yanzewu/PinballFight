@@ -10,9 +10,15 @@ public class AnimationManager {
     Dictionary<string, float> animation_lengths = new Dictionary<string, float>();
 
     public void initialize(){
-        animation_prefabs.Add("Explosion", ResManager.load_prefab("Explosion"));
-        animation_lengths.Add("Explosion", 1.0f);
+        add_animation("Explosion", 1.0f);
+        add_animation("SelfExplosion", 1.0f);
+
         controller = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+    }
+
+    private void add_animation(string name, float duration){
+        animation_prefabs.Add(name, ResManager.load_prefab(name));
+        animation_lengths.Add(name, 1.0f);
     }
 
     public void play_animation_at(string name, Vector2 pos){

@@ -23,11 +23,12 @@ public class Brick : MonoBehaviour {
 
     private void Start() {
         if (is_triangular){
+            int shift = brick_type == BrickType.IRON ? 4:0;
             var a = this.transform.eulerAngles.z;
-            if (Mathf.Abs(a) < 0.01f) GetComponent<SpriteHotLoader>().load(2);
-            else if (Mathf.Abs(a - 90) < 0.01f) GetComponent<SpriteHotLoader>().load(3);
-            else if (Mathf.Abs(a - 180) < 0.01f) GetComponent<SpriteHotLoader>().load(4);
-            else if (Mathf.Abs(a - 270) < 0.01f) GetComponent<SpriteHotLoader>().load(5);
+            if (Mathf.Abs(a) < 0.01f) GetComponent<SpriteHotLoader>().load(shift);
+            else if (Mathf.Abs(a - 90) < 0.01f) GetComponent<SpriteHotLoader>().load(shift+1);
+            else if (Mathf.Abs(a - 180) < 0.01f) GetComponent<SpriteHotLoader>().load(shift+2);
+            else if (Mathf.Abs(a - 270) < 0.01f) GetComponent<SpriteHotLoader>().load(shift+3);
         }
         else{
             GetComponent<SpriteHotLoader>().load((int)brick_type);

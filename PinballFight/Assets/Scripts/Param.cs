@@ -18,6 +18,8 @@ public class LevelParam {
     public float bounce_dy = 0.3125f;
     public float bounce_dt = 0.1f;
     public float bounce_dt2 = 0.1f;
+    public float hit_dy = 0.05f;
+    public float hit_dt = 0.025f;
     public float touch_dt = 0.2f;   // duration that a buttonup is identified as touch
     public float fireball_speed = 2.0f;
     public float launch_cd_init = 5.0f; // need to be adjusted for hero.

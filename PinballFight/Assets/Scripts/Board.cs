@@ -12,6 +12,8 @@ public class Board : MonoBehaviour {
     private float v_up;
     private float v_down;
     private float dy;
+    private float dy2;
+    private float v2 ;
 
     // Cache
     private bool is_active = false;  // activation status of bounce
@@ -57,6 +59,8 @@ public class Board : MonoBehaviour {
         v_up = param.bounce_dy / param.bounce_dt;
         v_down = param.bounce_dy / param.bounce_dt2;
         dy = param.bounce_dy;
+        dy2 = param.hit_dy;
+        v2 = param.hit_dy / param.hit_dt;
     }
 
     private void on_pointdown(PointerEventData data){
@@ -65,7 +69,9 @@ public class Board : MonoBehaviour {
 
     private void on_pointup(PointerEventData data){
         if (Time.time - touch_start < touch_dt){
-            controller.board_touched(player_id);
+            if (moving_status == 0){
+                controller.board_touched(player_id);
+            }
         }
     }
 
@@ -85,11 +91,20 @@ public class Board : MonoBehaviour {
         );
     }
 
+    public void hitten(){
+        if (is_active){
+            controller.board_deactivated(player_id);
+            is_active = false;
+        }
+        moving_status = 3;
+    }
+
     private void OnCollisionEnter2D(Collision2D other) {
         if (other.gameObject.tag == "Ball"){
             int other_id = other.gameObject.GetComponent<Ball>().player_id;
             if (other_id != player_id){
                 controller.board_attacked(player_id);
+                hitten();
                 Destroy(other.gameObject);
             }
             else if (other_id == player_id && is_active){
@@ -103,47 +118,46 @@ public class Board : MonoBehaviour {
     }
 
     private void Update() {
+
         if (moving_status == 0) return;
-        else if (moving_status == 1) {
-            if (player_id == 0){
-                if (transform.position.y - y0 < dy){
-                    transform.position += new Vector3(0, v_up * Time.deltaTime, 0);
-                }
-                else{
-                    moving_status = 2;
-                    is_active = false;
-                }
+        
+        float sgn = player_id == 0 ? 1.0f : -1.0f;
+
+        if (moving_status == 1) {
+            if (sgn * (transform.position.y - y0) - dy < 0){
+                transform.position += new Vector3(0, sgn * v_up * Time.deltaTime, 0);
             }
-            else if (player_id == 1){
-                if (transform.position.y - y0 > -dy){
-                    transform.position -= new Vector3(0, v_up * Time.deltaTime, 0);
-                }
-                else{
-                    moving_status = 2;
-                    is_active = false;
-                }
+            else{
+                moving_status = 2;
+                is_active = false;
             }
         }
         else if (moving_status == 2){
-            if (player_id == 0){
-                if (transform.position.y > y0){
-                    transform.position -= new Vector3(0, v_down * Time.deltaTime, 0);
-                }
-                else{
-                    moving_status = 0;
-                    transform.position = new Vector3(transform.position.x, y0, transform.position.z);
-                    controller.board_deactivated(player_id);
-                }
+            if (sgn * (transform.position.y - y0) > 0){
+                transform.position -= new Vector3(0, sgn * v_down * Time.deltaTime, 0);
             }
-            else if (player_id == 1){
-                if (transform.position.y < y0){
-                    transform.position += new Vector3(0, v_down * Time.deltaTime, 0);
-                }
-                else{
-                    moving_status = 0;
-                    transform.position = new Vector3(transform.position.x, y0, transform.position.z);
-                    controller.board_deactivated(player_id);
-                }
+            else{
+                moving_status = 0;
+                transform.position = new Vector3(transform.position.x, y0, transform.position.z);
+                controller.board_deactivated(player_id);
+            }
+        }
+        else if (moving_status == 3){
+            if (sgn * (transform.position.y - y0) + dy2 > 0){
+                transform.position -= new Vector3(0, sgn * v2 * Time.deltaTime, 0);
+            }
+            else{
+                moving_status = 4;
+                is_active = false;
+            }
+        }
+        else if (moving_status == 4){
+            if (sgn * (transform.position.y - y0) < 0){
+                transform.position += new Vector3(0, sgn * v2 * Time.deltaTime, 0);
+            }
+            else{
+                moving_status = 0;
+                transform.position = new Vector3(transform.position.x, y0, transform.position.z);
             }
         }
     }

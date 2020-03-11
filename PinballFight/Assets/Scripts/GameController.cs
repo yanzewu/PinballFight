@@ -177,7 +177,7 @@ public class GameController : MonoBehaviour {
         game_state.player_state[player_id].life--;
         ongame_ui_manager.update_hp_ui(player_id);
 
-        animation_manager.play_animation_at("Explosion", player_item[player_id].board.transform.position);
+        animation_manager.play_animation_at("SelfExplosion", player_item[player_id].board.transform.position);
 
         if (game_state.player_state[player_id].life == 0) {
             lose(player_id);

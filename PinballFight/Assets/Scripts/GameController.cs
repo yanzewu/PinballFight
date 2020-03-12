@@ -29,6 +29,8 @@ public class GameController : MonoBehaviour {
     TerrainManager game_terrian = new TerrainManager();
     BallManager ball_manager = new BallManager();
     BrickManager brick_manager = new BrickManager();
+    BotManager bot_manager = new BotManager();
+//    BotManager bot_manager2 = new BotManager();
     List<GameObject> ongame_items = new List<GameObject>();    // collections of all different items
 
     Dictionary<string, GameObject> item_prefabs;
@@ -82,6 +84,9 @@ public class GameController : MonoBehaviour {
         ui_manager.initialize();
         animation_manager.initialize();
 
+        bot_manager.initialize(player_item[1].board, item_prefabs["Ball"], 1);
+//        bot_manager2.initialize(player_item[0].board, item_prefabs["Ball"], 0);
+
         // prepare level
         reload_level(StatManager.get_state().current_level);
     }
@@ -104,6 +109,8 @@ public class GameController : MonoBehaviour {
             player_item[i].launcher.GetComponent<Launcher>().set_param(level_param, game_state.player_state[i], i);
         }
         ongame_ui_manager.reload(game_state);
+        bot_manager.reload(level_param);
+//        bot_manager2.reload(level_param);
 
         is_paused = false;
         is_finished = false;
@@ -152,10 +159,11 @@ public class GameController : MonoBehaviour {
             g_state.current_level = 0;
         }
         StatManager.save_stat();
+        clear_level();
     }
 
     public void board_dragged(Vector2 pos, int player_id){
-        //Debug.Log("Board dragged: " + pos.ToString());
+        Debug.Log("Board dragged: " + pos.ToString());
         player_item[player_id].board.GetComponent<Board>().move_horizontal(pos.x);
     }
 
@@ -246,6 +254,15 @@ public class GameController : MonoBehaviour {
         }
     }
 
+    public void bot_ball_sensed(GameObject ball, int player_id){
+        if (player_id == 1){
+            bot_manager.add_new_ball(ball);
+        }
+        else if (player_id == 0){
+//            bot_manager2.add_new_ball(ball);
+        }
+    }
+
     private void shoot(int player_id){
         Debug.Log("Shoot " + player_id.ToString());
 
@@ -290,6 +307,9 @@ public class GameController : MonoBehaviour {
                 checkpoint_state++;
             }
 
+        bot_manager.response();
+//        bot_manager2.response();
+
         // For tests only!
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Space)){
@@ -298,6 +318,14 @@ public class GameController : MonoBehaviour {
         for (int i = 0; i < 6; i++){
             if (Input.GetKeyDown(KeyCode.Alpha1+i)){
                 on_skill_effect((Brick.BrickType)(i+1), 0, Vector2.zero);
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha9)){
+            if (Time.timeScale > 1){
+                Time.timeScale = 1f;
+            }
+            else{
+                Time.timeScale = 10f;
             }
         }
 #endif

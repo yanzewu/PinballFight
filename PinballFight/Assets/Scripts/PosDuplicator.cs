@@ -6,6 +6,6 @@ public class PosDuplicator : MonoBehaviour {
     public Vector3 shift = Vector3.zero;
 
     private void Start() {
-        transform.position += shift * index;
+        transform.localPosition += shift * index;
     }
 }

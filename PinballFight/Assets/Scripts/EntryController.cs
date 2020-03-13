@@ -10,7 +10,7 @@ public class EntryController : MonoBehaviour {
     }
 
     void on_click_start(){
-        SceneManager.LoadScene("Main");
+        SceneManager.LoadScene("MapPick");
     }
 
     void on_click_quit(){

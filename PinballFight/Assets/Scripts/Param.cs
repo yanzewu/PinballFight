@@ -5,6 +5,7 @@ using UnityEngine;
 [Serializable]
 public class GameParam {
 
+    public int map_number = 1;
     public List<LevelParam> level_params = new List<LevelParam>(){new LevelParam()};
 }
 

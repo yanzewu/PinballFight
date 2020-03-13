@@ -88,6 +88,7 @@ public class GameController : MonoBehaviour {
 
     public void reload_level(int level){
         Debug.Log(level);
+        Debug.Log(StatManager.get_state().current_map);
         game_terrian.preload_level(level);
         game_terrian.instantiate_level(level);
 

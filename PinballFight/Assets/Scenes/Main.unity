@@ -271,6 +271,8 @@ MonoBehaviour:
     bounce_dy: 0.3125
     bounce_dt: 0.1
     bounce_dt2: 0.1
+    hit_dy: 0.05
+    hit_dt: 0.025
     touch_dt: 0.2
     fireball_speed: 2
     launch_cd_init: 5
@@ -588,8 +590,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: d999bda14ae62aa4fa3f3b3110d96794, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 2774c6ae48b9ba84f962d3e912214f0f, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.5882353}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1807,7 +1809,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.764151, g: 0.764151, b: 0.764151, a: 0}
+  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0

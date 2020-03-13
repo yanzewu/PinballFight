@@ -7,6 +7,7 @@ using System.Collections.Generic;
 [Serializable]
 public class GlobalState {
     public int current_level = 0;
+    public int current_map = 0;
     public int[] champion = new int [2]{0, 0};
 
 }

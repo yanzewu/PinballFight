@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
+    path: Assets/Scenes/MapPick.unity
+    guid: 32ca2e700e58aaf44af84c8d6286576b
+  - enabled: 1
     path: Assets/Scenes/Main.unity
     guid: 3819860443e80bb4397f13122a6caee9
   m_configObjects: {}

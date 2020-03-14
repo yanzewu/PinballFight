@@ -89,8 +89,8 @@ public class GameController : MonoBehaviour {
     public void reload_level(int level){
         Debug.Log(level);
         Debug.Log(StatManager.get_state().current_map);
-        game_terrian.preload_level(level);
-        game_terrian.instantiate_level(level);
+        game_terrian.preload_level(StatManager.get_state().current_map);
+        game_terrian.instantiate_level(StatManager.get_state().current_map);
 
         level_param = game_param.level_params[level];
 
@@ -139,7 +139,7 @@ public class GameController : MonoBehaviour {
         Debug.Log("exit");
         resume_game();
         clear_level();
-        SceneManager.LoadScene("Entry");
+        SceneManager.LoadScene("MapPick");
     }
 
     private void lose(int player_id){

@@ -39,7 +39,10 @@ public class BrickManager {
         var c_prob = _cumsum(durability_probs);
 
         foreach (Transform child in grid.transform){
+            if (child.tag != "Brick") continue;
+            
             Brick b = child.gameObject.GetComponent<Brick>();
+            
             if (b.is_triangular) {
                 if (UnityEngine.Random.Range(0f, 1f) < triangluar_iron_brick_probability){
                     b.brick_type = Brick.BrickType.IRON;

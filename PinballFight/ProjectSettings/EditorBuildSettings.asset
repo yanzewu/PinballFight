@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/Scenes/MapPick.unity
     guid: 32ca2e700e58aaf44af84c8d6286576b
   - enabled: 1
+    path: Assets/Scenes/ChampionPick.unity
+    guid: e6a0de7d89b604e4eb4610fa4252492b
+  - enabled: 1
     path: Assets/Scenes/Main.unity
     guid: 3819860443e80bb4397f13122a6caee9
   m_configObjects: {}

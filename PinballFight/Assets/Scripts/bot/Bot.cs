@@ -3,6 +3,7 @@ public class Bot : MonoBehaviour {
 
     public float speed;
     public float target_x = 0;
+    public bool is_active = true;
     int player_id;
 
     Transform tf;
@@ -37,6 +38,8 @@ public class Bot : MonoBehaviour {
     }
 
     private void Update() {
+        if (!is_active) return;
+        
         var sgn = (target_x - rb.position.x >= 0 ? 1.0f : -1.0f);
         if (Mathf.Abs(rb.position.x - target_x) > speed * Time.deltaTime){
             controller.board_dragged(rb.position + new Vector2(sgn * speed * Time.deltaTime, 0), player_id);

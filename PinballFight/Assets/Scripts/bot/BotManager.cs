@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BotManager {
 
-    int player_id;
+    public int player_id;
     Bot bot;
 
     float ball_r;
@@ -12,15 +12,14 @@ public class BotManager {
     float board_y;  // the frontier of board.
     float board_thick;
     float board_halfsize;
-    float buffer;
-    float self_buffer;
+
+    float defence_buffer;
+    float attack_buffer;
     float bounce_dy;
-    float speed = 10.0f;
-    int foresee = 10;
-    bool use_advanced = true;
+    float speed;
+    int prediction;
+    bool active_bounce;
 
-
-    List<float[]> sections;
     GameObject idc;
 
     class BallUnit {
@@ -40,15 +39,18 @@ public class BotManager {
     float last_refresh_time = 0.0f;
     float refresh_freq = 0.2f;
 
-    List<BallUnit> queue = new List<BallUnit>();
-    List<BallUnit> self_queue = new List<BallUnit>();
+    List<BallUnit> defence_queue = new List<BallUnit>();
+    List<BallUnit> attack_queue = new List<BallUnit>();
+    List<float[]> detected_segments;
+
 
     public void initialize(GameObject board, GameObject ball, int player_id){
         bot = board.AddComponent<Bot>();
         var cc = board.GetComponent<CapsuleCollider2D>();
         board_thick = cc.size.y;
         board_halfsize = cc.size.x / 2;
-        board_y = player_id == 1 ? board.transform.position.y - board_thick/2 : board.transform.position.y + board_thick/2;
+        board_y = player_id == 1 ? 
+            board.transform.position.y - board_thick/2 : board.transform.position.y + board_thick/2;
         ball_r = ball.GetComponent<CircleCollider2D>().radius;
 
         wall_x = Mathf.Abs(GameObject.Find("wallright").transform.position.x);
@@ -59,11 +61,16 @@ public class BotManager {
 #endif
     }
 
-    public void reload(LevelParam param){
+    public void reload(LevelParam param, int bot_level){
+
+        this.defence_buffer = param.defence_buffer;
+        this.attack_buffer = param.attack_buffer;
+        this.bounce_dy = param.bounce_dy * param.bounce_activate_range_rel;
+        this.speed = param.bot_speed[bot_level];
+        this.prediction = param.bot_prediction[bot_level];
+        this.active_bounce = param.does_attack[bot_level];
+
         bot.set_speed(speed);
-        buffer = 0.02f;
-        self_buffer = 0.1f;
-        bounce_dy = param.bounce_dy * 0.8f;
     }
 
     public void add_new_ball(GameObject ball){
@@ -78,12 +85,12 @@ public class BotManager {
         }
         
         if (ball.GetComponent<Ball>().player_id == player_id){
-            self_queue.Add(bu);
-            self_queue.Sort((x,y)=>x.hit_time.CompareTo(y.hit_time));
+            attack_queue.Add(bu);
+            attack_queue.Sort((x,y)=>x.hit_time.CompareTo(y.hit_time));
         }
         else{
-            queue.Add(bu);
-            queue.Sort((x,y)=>x.hit_time.CompareTo(y.hit_time));    // A heap would be better
+            defence_queue.Add(bu);
+            defence_queue.Sort((x,y)=>x.hit_time.CompareTo(y.hit_time));    // A heap would be better
         }
 
         last_refresh_time = Time.time;
@@ -94,55 +101,50 @@ public class BotManager {
         // avoid hit position
 
         if (Time.time - last_refresh_time > refresh_freq){
-            foreach (var bu in queue){
+            foreach (var bu in defence_queue){
                 update_hit_pos(bu);
             }
-            foreach (var bu in self_queue){
+            foreach (var bu in attack_queue){
                 update_hit_pos(bu);
             }
-            queue.Sort((a,b)=>a.hit_time.CompareTo(b.hit_time));
-            self_queue.Sort((a,b)=>a.hit_time.CompareTo(b.hit_time));
+            defence_queue.Sort((a,b)=>a.hit_time.CompareTo(b.hit_time));
+            attack_queue.Sort((a,b)=>a.hit_time.CompareTo(b.hit_time));
             last_refresh_time = Time.time;
         }
 
-        for(int i = 0; i < queue.Count;i++){
-            if (queue[i].leave_time < 0 || queue[i].ball.gameObject == null){
-                queue.RemoveAt(i);
+        for(int i = 0; i < defence_queue.Count;i++){
+            if (defence_queue[i].leave_time < 0 || defence_queue[i].ball.gameObject == null){
+                defence_queue.RemoveAt(i);
             }
         }
-        for(int i = 0; i < self_queue.Count;i++){
-            if (self_queue[i].leave_time < 0 || self_queue[i].ball.gameObject == null || self_queue[i].rb == null){
-                self_queue.RemoveAt(i);
+        for(int i = 0; i < attack_queue.Count;i++){
+            if (attack_queue[i].leave_time < 0 || attack_queue[i].ball.gameObject == null || attack_queue[i].rb == null){
+                attack_queue.RemoveAt(i);
             }
         }
 
-        bool do_move = false;
-        if (queue.Count != 0){
+        var ret = get_target_pos();
 
-            var ret = get_target_pos(queue[0]);
-
-            if (ret.Item1 == 1 || ret.Item1 == 3){
-                bot.set_target(ret.Item2[0]);
-            }
-            else if (ret.Item1 == 2 || ret.Item1 == 4){
-                bot.set_target(ret.Item2[1]);
-            }
-            do_move = ret.Item1 != 0;
-
+        if (ret.Item1 == 1 || ret.Item1 == 3){
+            bot.set_target(ret.Item2[0]);
         }
-        else{
-            this.sections = new List<float[]>();
+        else if (ret.Item1 == 2 || ret.Item1 == 4){
+            bot.set_target(ret.Item2[1]);
+        }
+        else if (ret.Item1 == -1){
             bot.set_target(0);
         }
 
-        if (self_queue.Count > 0){
+        bool do_move = ret.Item1 > 0;
 
-            float hit_left = self_queue[0].hit_pos - board_halfsize + self_buffer;
-            float hit_right = self_queue[0].hit_pos + board_halfsize - self_buffer;
+        if (attack_queue.Count > 0){
+
+            float hit_left = attack_queue[0].hit_pos - board_halfsize + attack_buffer;
+            float hit_right = attack_queue[0].hit_pos + board_halfsize - attack_buffer;
             float x = bot.get_pos();
 
-            if (!do_move && (queue.Count == 0 || self_queue[0].hit_time < queue[0].hit_time)){
-                var available_segments = intersect_front(self_queue[0].hit_time);
+            if (!do_move && (defence_queue.Count == 0 || attack_queue[0].hit_time < defence_queue[0].hit_time)){
+                var available_segments = intersect_front(attack_queue[0].hit_time);
                 if (!available_segments.Item2){
                     // intersection hit_left,hit_right with avaialble_segments.item1, we got two points or nothing
                     var real_available_segments = _intersect22(available_segments.Item1, new float[2]{hit_left, hit_right});
@@ -156,8 +158,8 @@ public class BotManager {
                 }
             }
 
-            if (use_advanced && self_queue[0].rb != null && x > hit_left && x < hit_right){
-                var dy = (board_y - self_queue[0].rb.position.y) * (player_id == 1 ? 1.0f : -1.0f) - ball_r;
+            if (active_bounce && attack_queue[0].rb != null && x > hit_left && x < hit_right){
+                var dy = (board_y - attack_queue[0].rb.position.y) * (player_id == 1 ? 1.0f : -1.0f) - ball_r;
                 if (dy > 0 && dy < bounce_dy){
                     bot.bounce();
                 }
@@ -166,30 +168,36 @@ public class BotManager {
 
     }
 
-    private (int, float[]) get_target_pos(BallUnit bu){
+    private (int, float[]) get_target_pos(){
         // 0-> no need to move; 1->left; 2->right; 3->left+right, prefer left; 4->left+right, prefer right
+        // -1-> no ball in queue, prefer center
 
-        float hit_left = bu.hit_pos - bu.hit_ext[0] - board_halfsize - buffer;
-        float hit_right = bu.hit_pos + bu.hit_ext[1] + board_halfsize + buffer;
-        float hit_time_left = bu.hit_time;
-        float hit_time_right = bu.hit_time;
 
-        this.sections = get_sections();
 
-        if (use_advanced){
-        var h = get_nearest_section(sections);
-
-        hit_left = h[0];
-        hit_right = h[1];
-        hit_time_left = h[2];
-        hit_time_right = h[3];
+        if (defence_queue.Count > 0){
+            this.detected_segments = get_sections();
         }
+        else{
+            this.detected_segments = new List<float[]>();
+            return (-1, new float[2]{0, 0});
+        }
+        
+        var h = get_nearest_section(detected_segments);
+
+        float hit_left = h[0];
+        float hit_right = h[1];
+        float hit_time_left = h[2];
+        float hit_time_right = h[3];
+/*        hit_left = attack_queue[0].hit_pos - attack_queue[0].hit_ext[0] - board_halfsize - defence_buffer;
+        hit_right = attack_queue[0].hit_pos + attack_queue[0].hit_ext[1] + board_halfsize + defence_buffer;
+        hit_time_left = attack_queue[0].hit_time;
+        hit_time_right = attack_queue[0].hit_time;*/
         
 
 #if UNITY_EDITOR
         if (player_id == 1){
             idc.transform.position = new Vector3((hit_left + hit_right)/2, idc.transform.position.y, -0.1f);
-            idc.transform.localScale = new Vector3((hit_right - hit_left - 2*board_halfsize - 2*buffer) / (2*board_halfsize), 0.1f, 1.0f);    
+            idc.transform.localScale = new Vector3((hit_right - hit_left - 2*board_halfsize - 2*defence_buffer) / (2*board_halfsize), 0.1f, 1.0f);    
         }
 #endif
 
@@ -199,8 +207,8 @@ public class BotManager {
             return (0, new float[2]{hit_left, hit_right});
         }
 
-        bool left_possible = hit_left > -wall_x + board_halfsize && (x - hit_left) / bot.speed < hit_time_left;
-        bool right_possible = hit_right < wall_x - board_halfsize && (hit_right - x) / bot.speed < hit_time_right;
+        bool left_possible = hit_left > -wall_x + board_halfsize && (x - hit_left) / speed < hit_time_left;
+        bool right_possible = hit_right < wall_x - board_halfsize && (hit_right - x) / speed < hit_time_right;
 
         if (!(left_possible ^ right_possible)){
             if (hit_left + wall_x > wall_x - hit_right){
@@ -234,12 +242,14 @@ public class BotManager {
     }
 
     public (float[], bool) intersect_front(float y){
-        // returns: Left segment x1, x2; right segment x1, x2
+        // returns: 
+        // Not inside a segment: ([xl, xr], false)
+        // Inside a segment: ([xl1, xl2, xr1, xr2], true)
         // assuming y < everything
 
         List<(float, float)> segments = new List<(float, float)>();
 
-        foreach (var tu in sections){
+        foreach (var tu in detected_segments){
             var myl = tu[0] + (tu[2] - y) * speed;
             var myr = tu[1] - (tu[3] - y) * speed;
 
@@ -276,19 +286,20 @@ public class BotManager {
 
         List<Vector2[]> triangles = new List<Vector2[]>();
 
-        for (int i = 0; i < Mathf.Min(queue.Count, foresee); i++){
+        for (int i = 0; i < Mathf.Min(defence_queue.Count, prediction); i++){
 
-            var xl = queue[i].hit_pos - queue[i].hit_ext[0] - board_halfsize - buffer;
-            var xr = queue[i].hit_pos + queue[i].hit_ext[1] + board_halfsize + buffer;
+            var xl = defence_queue[i].hit_pos - defence_queue[i].hit_ext[0] - board_halfsize - defence_buffer;
+            var xr = defence_queue[i].hit_pos + defence_queue[i].hit_ext[1] + board_halfsize + defence_buffer;
 
-            var dt = (xr - xl)/2/speed;
-            xl = (xl+xr)/2 - (xr-xl)/2 * (dt + queue[i].leave_time - queue[i].hit_time) / dt;
-            xr = (xl+xr)/2 + (xr-xl)/2 * (dt + queue[i].leave_time - queue[i].hit_time) / dt;
+            // expansion due to the difference between leave_time and hit_time
+           /* var dt = (xr - xl)/2/speed;
+            xl = (xl+xr)/2 - (xr-xl)/2 * (dt + defence_queue[i].leave_time - defence_queue[i].hit_time) / dt;
+            xr = (xl+xr)/2 + (xr-xl)/2 * (dt + defence_queue[i].leave_time - defence_queue[i].hit_time) / dt;*/
 
             triangles.Add(new Vector2[3]{
-                new Vector2((xr + xl)/2, queue[i].hit_time - (xr - xl)/2/speed), 
-                new Vector2(xl,  queue[i].leave_time),
-                new Vector2(xr, queue[i].leave_time)});
+                new Vector2((xr + xl)/2, defence_queue[i].hit_time - (xr - xl)/2/speed), 
+                new Vector2(xl,  defence_queue[i].hit_time),
+                new Vector2(xr, defence_queue[i].hit_time)});
         }
 
         if (triangles.Count == 0){
@@ -375,14 +386,14 @@ public class BotManager {
         var v = bu.rb.velocity;
         var pos = bu.rb.position;
 
-        bu.hit_time = (Mathf.Abs(board_y - pos.y)) / Mathf.Abs(v.y);
-        bu.leave_time = (Mathf.Abs(board_y - pos.y) + board_thick + ball_r) / Mathf.Abs(v.y);
-
+        var t = (Mathf.Abs(board_y - pos.y)) / Mathf.Abs(v.y);
         var wall_width = wall_x * 2 - ball_r * 2;
-        var raw_x = wall_width / 2 + pos.x + bu.hit_time * v.x;
+        var raw_x = wall_width / 2 + pos.x + t * v.x;
         var n = Mathf.Floor(raw_x / wall_width);
 
         bu.hit_time = (Mathf.Abs(board_y - pos.y) - ball_r) / Mathf.Abs(v.y);
+        bu.leave_time = (Mathf.Abs(board_y - pos.y) + board_thick + ball_r) / Mathf.Abs(v.y);
+
         if (n % 2 == 0){
             bu.hit_pos = raw_x - n * wall_width - wall_width/2;
         }
@@ -392,10 +403,9 @@ public class BotManager {
 
         var r_ext = ball_r * Mathf.Abs(v.magnitude / v.y);
         var b_ext = (board_thick) * Mathf.Abs(v.x / v.y);
-        Debug.Log(b_ext);
         bu.hit_ext = new float[2]{
-            r_ext + (v.y < 0 ? b_ext : 0),
-            r_ext + (v.y > 0 ? b_ext : 0)
+            r_ext + (v.x < 0 ? b_ext : 0),
+            r_ext + (v.x > 0 ? b_ext : 0)
         };
     }
 

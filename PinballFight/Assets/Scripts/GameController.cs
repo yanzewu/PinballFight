@@ -29,8 +29,8 @@ public class GameController : MonoBehaviour {
     TerrainManager game_terrian = new TerrainManager();
     BallManager ball_manager = new BallManager();
     BrickManager brick_manager = new BrickManager();
-    BotManager bot_manager = new BotManager();
-//    BotManager bot_manager2 = new BotManager();
+    BotManager bot_manager = null;
+    BotManager bot_manager2 = null;
     List<GameObject> ongame_items = new List<GameObject>();    // collections of all different items
 
     Dictionary<string, GameObject> item_prefabs;
@@ -55,8 +55,8 @@ public class GameController : MonoBehaviour {
         }
 
         game_param = ParamManager.load_param(0);
-        //game_param = new GameParam();
-        //ParamManager.save_param(0, game_param);
+//        game_param = new GameParam();
+//        ParamManager.save_param(0, game_param);
         game_state.initialize(game_param);
 #if UNITY_EDITOR
         game_state_display = game_state;
@@ -84,8 +84,15 @@ public class GameController : MonoBehaviour {
         ui_manager.initialize();
         animation_manager.initialize();
 
-        bot_manager.initialize(player_item[1].board, item_prefabs["Ball"], 1);
-//        bot_manager2.initialize(player_item[0].board, item_prefabs["Ball"], 0);
+        if (StatManager.get_state().game_mode == 0){
+            bot_manager = new BotManager();
+            bot_manager.initialize(player_item[1].board, item_prefabs["Ball"], 1);
+        }
+#if UNITY_EDITOR        
+        else if (StatManager.get_state().game_mode == 2){
+            bot_manager2.initialize(player_item[0].board, item_prefabs["Ball"], 0);
+        }
+#endif        
 
         // prepare level
         reload_level(StatManager.get_state().current_level);
@@ -109,8 +116,8 @@ public class GameController : MonoBehaviour {
             player_item[i].launcher.GetComponent<Launcher>().set_param(level_param, game_state.player_state[i], i);
         }
         ongame_ui_manager.reload(game_state);
-        bot_manager.reload(level_param);
-//        bot_manager2.reload(level_param);
+        if (bot_manager != null) bot_manager.reload(level_param, StatManager.get_state().bot_level);
+        if (bot_manager2 != null) bot_manager2.reload(level_param, 2);
 
         is_paused = false;
         is_finished = false;
@@ -184,13 +191,15 @@ public class GameController : MonoBehaviour {
     public void board_attacked(int player_id){
         Debug.Log("Board attacked");
         game_state.player_state[player_id].life--;
-        ongame_ui_manager.update_hp_ui(player_id);
-
+        if (game_state.player_state[player_id].life >= 0){
+            ongame_ui_manager.update_hp_ui(player_id);    
+        }
         animation_manager.play_animation_at("SelfExplosion", player_item[player_id].board.transform.position);
 
         if (game_state.player_state[player_id].life == 0) {
             lose(player_id);
         }
+
     }
 
     public void ball_recovered(int player_id){
@@ -255,11 +264,12 @@ public class GameController : MonoBehaviour {
     }
 
     public void bot_ball_sensed(GameObject ball, int player_id){
+        
         if (player_id == 1){
-            bot_manager.add_new_ball(ball);
+            if (bot_manager != null) bot_manager.add_new_ball(ball);
         }
         else if (player_id == 0){
-//            bot_manager2.add_new_ball(ball);
+            if (bot_manager2 != null) bot_manager2.add_new_ball(ball);
         }
     }
 
@@ -307,8 +317,8 @@ public class GameController : MonoBehaviour {
                 checkpoint_state++;
             }
 
-        bot_manager.response();
-//        bot_manager2.response();
+        if (bot_manager != null) bot_manager.response();
+        if (bot_manager2 != null) bot_manager2.response();
 
         // For tests only!
 #if UNITY_EDITOR

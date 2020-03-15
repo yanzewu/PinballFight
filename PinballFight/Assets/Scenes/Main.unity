@@ -315,6 +315,15 @@ MonoBehaviour:
     colors:
     - {x: 0, y: 0, z: 255, w: 255}
     - {x: 255, y: 0, z: 0, w: 255}
+    defence_buffer: 0.02
+    attack_buffer: 0.1
+    bounce_activate_range_rel: 0.8
+    bot_speed:
+    - 5
+    - 5
+    - 10
+    bot_prediction: 03000000050000000a000000
+    does_attack: 000101
 --- !u!4 &222748512
 Transform:
   m_ObjectHideFlags: 0

@@ -8,6 +8,9 @@ using System.Collections.Generic;
 public class GlobalState {
     public int current_level = 0;
     public int current_map = 0;
+    public int game_mode = 0;   // ai; 1->two players
+    public bool is_first_time = true;
+    public int bot_level = 0;
     public int[] champion = new int [2]{0, 0};
 
 }

@@ -66,6 +66,24 @@
                     "z": 0.0,
                     "w": 255.0
                 }
+            ],
+            "defence_buffer": 0.07000000029802323,
+            "attack_buffer": 0.10000000149011612,
+            "bounce_activate_range_rel": 0.800000011920929,
+            "bot_speed": [
+                4.0,
+                10.0,
+                20.0
+            ],
+            "bot_prediction": [
+                1,
+                10,
+                10
+            ],
+            "does_attack": [
+                false,
+                true,
+                true
             ]
         }
     ]

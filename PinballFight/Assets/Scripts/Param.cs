@@ -53,4 +53,14 @@ public class LevelParam {
     public int championC_bounce_value_required = 4;
 
     public List<Vector4> colors = new List<Vector4>(){new Vector4(0, 0, 255, 255), new Vector4(255, 0, 0, 255)};
+
+
+    // AI
+
+    public float defence_buffer = 0.07f;
+    public float attack_buffer = 0.1f;
+    public float bounce_activate_range_rel = 0.8f;
+    public float[] bot_speed = new float[3]{4.0f, 10.0f, 20.0f};
+    public int[] bot_prediction = new int[3]{1, 10, 10};
+    public bool[] does_attack = new bool[3]{false, true, true};
 }

@@ -23,7 +23,9 @@ public class RectHPBar : MonoBehaviour {
         var sr = ghost.AddComponent<SpriteRenderer>();
         sr.color = color;
 
-        Vector2 pivot = orientation == 0 ? new Vector2(0, 0.5f) : new Vector2(0.5f, 0);
+        Vector2 pivot = Vector2.zero;
+        if (orientation == 0 || orientation == 2) pivot = new Vector2(0, 0.5f);
+        else if (orientation == 1 || orientation == 3) pivot = new Vector2(0.5f, 0);
 
         sr.sprite = Sprite.Create(
             empty_texture,
@@ -32,25 +34,26 @@ public class RectHPBar : MonoBehaviour {
             pfu
         );
         ghost.transform.SetParent(this.gameObject.transform);
+        if (orientation > 1) ghost.transform.Rotate(0, 0, 180);
         float zindex = front ? -0.01f:0.01f;
 
-        if (orientation == 0){
+        if (orientation == 0 || orientation == 2){
             ghost.transform.localPosition = new Vector3(-size.x / 2 / pfu * (1 - 2 * padding.x), 0, zindex);
         }
-        else{
+        else if (orientation == 1 || orientation == 3){
             ghost.transform.localPosition = new Vector3(0, -size.y / 2 / pfu * (1 - 2 * padding.y), zindex);
         }
     }
 
     public void set_hp(float hp){
-        if (orientation == 0){
+        if (orientation == 0 || orientation == 2){
             /*
             ghost.transform.localPosition = new Vector3(
                 (-0.5f+hp/2) * size.x/100, 0f, ghost.transform.localPosition.z
             );*/
             ghost.transform.localScale = new Vector3(hp * (1- 2* padding.x), 1 - padding.y, 1);
         }
-        else if (orientation == 1){
+        else if (orientation == 1 || orientation == 3){
             /*ghost.transform.localPosition = new Vector3(
                 0f, (-0.5f+hp/2) * size.y/100, ghost.transform.localPosition.z
             );*/

@@ -11,6 +11,7 @@ public class GameController : MonoBehaviour {
         public GameObject launcher;
         public GameObject ball_indicator;
         public GameObject bouncevalue_indicator;
+        public GameObject ball_indicator_text;
         public GameObject[] HPs;
     };
 
@@ -62,23 +63,20 @@ public class GameController : MonoBehaviour {
         game_state_display = game_state;
         level_param_display = game_param.level_params[0];
 #endif
-        ongame_ui_manager.initialize();
+        
 
         for (int i = 0; i < 2; i++){
             player_item[i].board = Instantiate(item_prefabs["Board"]);
             player_item[i].launcher = Instantiate(item_prefabs["Launcher"]);
-            if (i == 0){
-                player_item[i].ball_indicator = Instantiate(item_prefabs["BallIndicator"]);
-                player_item[i].bouncevalue_indicator = Instantiate(item_prefabs["BounceValueIndicator"]);
-            }
+            player_item[i].ball_indicator = Instantiate(item_prefabs["BallIndicator"]);
+            player_item[i].bouncevalue_indicator = Instantiate(item_prefabs["BounceValueIndicator"]);
 
             player_item[i].HPs = new GameObject[game_param.level_params[0].lives];
             for (int j = 0; j < game_param.level_params[0].lives; j++){
                 player_item[i].HPs[j] = Instantiate(item_prefabs["HP"]);
             }
-
-            ongame_ui_manager.init_player_ui(player_item[i], i);
         }
+        ongame_ui_manager.initialize(player_item, StatManager.get_state().game_mode == 0 ? 1 : 2);
 
         ball_manager.initialize(this, item_prefabs["Ball"], game_param);
         ui_manager.initialize();
@@ -98,9 +96,17 @@ public class GameController : MonoBehaviour {
         reload_level(StatManager.get_state().current_level);
     }
 
+    private void Start() {
+        if (StatManager.get_state().is_first_time){
+            ui_manager.on_click_info();
+            StatManager.get_state().is_first_time = false;
+        }
+    }
+
     public void reload_level(int level){
         Debug.Log(level);
         Debug.Log(StatManager.get_state().current_map);
+        Debug.Log(StatManager.get_state().bot_level);
         game_terrian.preload_level(StatManager.get_state().current_map);
         game_terrian.instantiate_level(StatManager.get_state().current_map);
 
@@ -153,6 +159,7 @@ public class GameController : MonoBehaviour {
         Debug.Log("exit");
         resume_game();
         clear_level();
+        StatManager.save_stat();
         SceneManager.LoadScene("MapPick");
     }
 
@@ -253,15 +260,11 @@ public class GameController : MonoBehaviour {
 
     public void bounce_value_obtained(int player_id){
         game_state.player_state[player_id].bounce_value++;
-        if (game_state.player_state[player_id].bounce_value == game_state.player_state[0].bounce_value_required){
+        if (game_state.player_state[player_id].bounce_value == game_state.player_state[player_id].bounce_value_required){
             game_state.player_state[player_id].bounce_value = 0;
             on_skill_effect(Brick.BrickType.SANDGLASS, player_id, Vector2.zero);
         }
-        if (player_id == 0){
-            player_item[0].bouncevalue_indicator.GetComponent<BounceValueIndicator>().set_length(
-                (float)game_state.player_state[0].bounce_value / game_state.player_state[0].bounce_value_required
-            );
-        }
+        ongame_ui_manager.update_bouncevalue_ui(player_id);
     }
 
     public void bot_ball_sensed(GameObject ball, int player_id){

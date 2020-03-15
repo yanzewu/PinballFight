@@ -25,7 +25,7 @@ public class Bot : MonoBehaviour {
     }
 
     public void set_target(float x){
-        Debug.Log("target set: " + x.ToString());
+        //Debug.Log("target set: " + x.ToString());
         target_x = x;
     }
     public float get_pos(){

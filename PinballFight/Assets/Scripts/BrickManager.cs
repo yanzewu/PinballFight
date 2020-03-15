@@ -147,8 +147,8 @@ public class BrickManager {
                 down_result[x].Item1 == Brick.BrickType.IRON).Count() > 0 ||
             Enumerable.Range(0, down_result.Count).Where(
             x => (
-                down_half[x].Item3 > down_half.Last().Item3 - 10) && 
-                down_result[x].Item1 == Brick.BrickType.IRON).Count() > 0){
+                up_half[x].Item3 > up_half.Last().Item3 - 10) && 
+                up_result[x].Item1 == Brick.BrickType.IRON).Count() > 0){
                 Debug.Log("Failed to meet iron requirement");
                 generate_map_advanced(grid, mode);
                 return;

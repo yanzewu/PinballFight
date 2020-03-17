@@ -2,7 +2,7 @@
     "level_params": [
         {
             "lives": 3,
-            "ball_speed": 2.5,
+            "ball_speed": 3.2,
             "bounce_cd_init": 6.0,
             "bounce_cd_min": 3.0,
             "bounce_dy": 0.3125,
@@ -17,7 +17,7 @@
             "launch_rate": 20.0,
             "launcher_min_angle": 0.5235987901687622,
             "launcher_max_angle": 1.3089970350265504,
-            "launcher_angular_speed": 0.6283185482025147,
+            "launcher_angular_speed": 1.0283185482025147,
             "launcher_cd_checkpoints": [
                 15.0,
                 30.0,
@@ -37,8 +37,8 @@
                 0.09526000171899796
             ],
             "brick_probabilities": [
-                0.5,
-                0.10000000149011612,
+                0.54,
+                0.06000000149011612,
                 0.10000000149011612,
                 0.10000000149011612,
                 0.10000000149011612,

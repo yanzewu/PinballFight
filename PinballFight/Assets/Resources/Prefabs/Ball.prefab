@@ -249,5 +249,5 @@ MonoBehaviour:
   filename: Ball
   pfu: 96
   filenames:
-  - ball_blue
-  - ball_red
+  - ballBlue
+  - ballRed

@@ -156,7 +156,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 128.59998}
-  m_SizeDelta: {x: 221.7, y: 88.599976}
+  m_SizeDelta: {x: 88.59998, y: 88.599976}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &20959574
 MonoBehaviour:
@@ -219,7 +219,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: bb805d8011d28bc43b0cd61fb64ead2d, type: 3}
+  m_Sprite: {fileID: 8394794552422958212, guid: 66e9c80335fb4584e9bb6f0319900f4b,
+    type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -249,6 +250,8 @@ GameObject:
   - component: {fileID: 215064493}
   - component: {fileID: 215064492}
   - component: {fileID: 215064491}
+  - component: {fileID: 215064496}
+  - component: {fileID: 215064495}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -339,6 +342,42 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &215064495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 215064490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 22a45bc2a6c47f34dad369e1dab5f0b1, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &215064496
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 215064490}
+  m_CullTransparentMesh: 0
 --- !u!1 &326833755
 GameObject:
   m_ObjectHideFlags: 0
@@ -407,7 +446,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Cute Snail. Your bounce CD will -1s
+  m_Text: "\u5C0F\u8717\uFF1A\u5F39\u53CD\u51B7\u5374\u65F6\u95F4\u51CF\u5C111\u79D2"
 --- !u!222 &326833758
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -589,8 +628,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -159}
-  m_SizeDelta: {x: 343.34998, y: 41.7}
+  m_AnchoredPosition: {x: 0, y: -162}
+  m_SizeDelta: {x: 129.1, y: 41.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &990075112
 MonoBehaviour:
@@ -623,9 +662,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Choose Your Champion
-
-'
+  m_Text: "\u9009\u62E9\u82F1\u96C4"
 --- !u!222 &990075113
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -866,8 +903,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 22a45bc2a6c47f34dad369e1dab5f0b1, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -996,7 +1033,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 65527b0cb5c4a7346a09c21ad717c57f, type: 3}
+  m_Sprite: {fileID: 6976498266456604981, guid: 66e9c80335fb4584e9bb6f0319900f4b,
+    type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

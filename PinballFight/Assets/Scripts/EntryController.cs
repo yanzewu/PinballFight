@@ -16,7 +16,7 @@ public class EntryController : MonoBehaviour {
 
         StatManager.load_stat();
 
-        var sp = GameObject.Find("BtnSinglePlayer").GetComponent<Toggle>();
+        //var sp = GameObject.Find("BtnSinglePlayer").GetComponent<Toggle>();
         var mp = GameObject.Find("BtnMultiPlayer").GetComponent<Toggle>();
         var easy = GameObject.Find("BtnEasy").GetComponent<Toggle>();
         var hard = GameObject.Find("BtnHard").GetComponent<Toggle>();
@@ -24,22 +24,22 @@ public class EntryController : MonoBehaviour {
         Debug.Log(StatManager.get_state().game_mode);
         Debug.Log(StatManager.get_state().bot_level);
 
-        sp.onValueChanged.AddListener(b=>{if(b) StatManager.get_state().game_mode = 0;});
+        //sp.onValueChanged.AddListener(b=>{if(b) StatManager.get_state().game_mode = 0;});
         mp.onValueChanged.AddListener(b=>{if(b) StatManager.get_state().game_mode = 1;});
-        easy.onValueChanged.AddListener(b=>{if(b) StatManager.get_state().bot_level = 0;});
-        hard.onValueChanged.AddListener(b=>{if(b) StatManager.get_state().bot_level = 2;});
+        easy.onValueChanged.AddListener(b=>{if(b) {StatManager.get_state().bot_level = 0;StatManager.get_state().game_mode = 0;}});
+        hard.onValueChanged.AddListener(b=>{if(b) {StatManager.get_state().bot_level = 2;StatManager.get_state().game_mode = 1;}});
 
         GameObject.Find("BtnGameMode").GetComponent<Button>().onClick.AddListener(() => {
             panel_gamemode.SetActive(true);
-            if (StatManager.get_state().game_mode == 0) sp.isOn = true; else mp.isOn = true;
-            if (StatManager.get_state().bot_level == 2) hard.isOn = true; else easy.isOn = true;
+            if (StatManager.get_state().game_mode == 1) mp.isOn = true;
+            if (StatManager.get_state().game_mode == 0 && StatManager.get_state().bot_level == 2) hard.isOn = true; else easy.isOn = true;
         });
 
         panel_gamemode.SetActive(false);
     }
 
     void on_click_start(){
-        SceneManager.LoadScene("MapPick");
+        SceneManager.LoadScene("ChampionPick");
     }
 
     void on_click_quit(){

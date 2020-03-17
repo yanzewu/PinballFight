@@ -22,8 +22,8 @@ public class ChampionPickController : MonoBehaviour {
 
     private void Awake() {
         
-        GameObject.Find("BtnQuit").GetComponent<Button>().onClick.AddListener(delegate{SceneManager.LoadScene("MapPick");});
-        GameObject.Find("BtnContinue").GetComponent<Button>().onClick.AddListener(delegate{SceneManager.LoadScene("Main");});
+        GameObject.Find("BtnQuit").GetComponent<Button>().onClick.AddListener(delegate{SceneManager.LoadScene("Entry");});
+        GameObject.Find("BtnContinue").GetComponent<Button>().onClick.AddListener(delegate{SceneManager.LoadScene("MapPick");});
 
         var ph = GameObject.Find("PanelHost");
         var pu0 = GameObject.Find("PanelUnit");
@@ -60,7 +60,7 @@ public class ChampionPickController : MonoBehaviour {
 
     private void Update() {
         if (Input.GetKeyDown(KeyCode.Escape)){
-            SceneManager.LoadScene("MapPick");
+            SceneManager.LoadScene("Entry");
         }
 
         if (EventSystem.current.currentSelectedGameObject == null || EventSystem.current.currentSelectedGameObject.tag != "Selectable"){

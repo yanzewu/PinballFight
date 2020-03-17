@@ -21,8 +21,8 @@ public class MapPickController : MonoBehaviour {
 
     private void Awake() {
         
-        GameObject.Find("BtnQuit").GetComponent<Button>().onClick.AddListener(delegate{SceneManager.LoadScene("Entry");});
-        GameObject.Find("BtnContinue").GetComponent<Button>().onClick.AddListener(delegate{SceneManager.LoadScene("ChampionPick");});
+        GameObject.Find("BtnQuit").GetComponent<Button>().onClick.AddListener(delegate{SceneManager.LoadScene("ChampionPick");});
+        GameObject.Find("BtnContinue").GetComponent<Button>().onClick.AddListener(delegate{SceneManager.LoadScene("Main");});
 
         
         var pu0 = GameObject.Find("PanelUnit");
@@ -67,7 +67,7 @@ public class MapPickController : MonoBehaviour {
 
     private void Update() {
         if (Input.GetKeyDown(KeyCode.Escape)){
-            SceneManager.LoadScene("Entry");
+            SceneManager.LoadScene("ChampionPick");
         }
 
         if (EventSystem.current.currentSelectedGameObject == null || EventSystem.current.currentSelectedGameObject.tag != "Selectable"){

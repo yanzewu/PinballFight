@@ -45,7 +45,7 @@
                 0.0,
                 0.10000000149011612
             ],
-            "triangluar_iron_brick_probability": 0.4000000059604645,
+            "triangluar_iron_brick_probability": 0.1200000059604645,
             "bounce_value_required": 5,
             "roll_bounce_cd_dec": 0.5,
             "sandglass_launch_cd_dec": 0.30000001192092898,

@@ -131,8 +131,8 @@ public class GameController : MonoBehaviour {
         time_begin = Time.time;
         checkpoint_state = 0;
     }
-    public void clear_level(){
-        game_terrian.clear_level();
+    public void clear_level(bool clear_terrian=true){
+        if (clear_terrian) game_terrian.clear_level();
         ball_manager.clear();
 
         foreach (var item in ongame_items){
@@ -158,7 +158,7 @@ public class GameController : MonoBehaviour {
     public void exit_game(){
         Debug.Log("exit");
         resume_game();
-        clear_level();
+        clear_level(false);
         StatManager.save_stat();
         SceneManager.LoadScene("MapPick");
     }
@@ -174,7 +174,7 @@ public class GameController : MonoBehaviour {
             g_state.current_level = 0;
         }
         StatManager.save_stat();
-        clear_level();
+        clear_level(false);
     }
 
     public void board_dragged(Vector2 pos, int player_id){

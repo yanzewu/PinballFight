@@ -703,12 +703,12 @@ MonoBehaviour:
   item_count: 3
   image_filenames:
   - snail_original
-  - snail_original
-  - snail_original
+  - rhino_original
+  - rhino_original
   texts:
-  - Cute Snail. Your bounce CD will -1s
-  - ???. Your launch CD will -0.4s
-  - ???. Only 4 energies are required to improve launch CD
+  - "\u5C0F\u8717\uFF1A\u5F39\u53CD\u51B7\u5374\u65F6\u95F4\u51CF\u5C111\u79D2"
+  - "\u5C0F\u8717\uFF1A\u5F39\u53CD\u51B7\u5374\u65F6\u95F4\u51CF\u5C111\u79D2"
+  - "\u5C0F\u8717\uFF1A\u5F39\u53CD\u51B7\u5374\u65F6\u95F4\u51CF\u5C111\u79D2"
 --- !u!4 &1076140927
 Transform:
   m_ObjectHideFlags: 0
@@ -880,10 +880,10 @@ RectTransform:
   m_Father: {fileID: 215064494}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -9.100105}
-  m_SizeDelta: {x: 0, y: -447.99982}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 29.35498}
+  m_SizeDelta: {x: 0, y: 397.71008}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1175494967
 MonoBehaviour:
@@ -969,7 +969,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 41.80005, y: -45.799988}
+  m_AnchoredPosition: {x: 41.80005, y: -45.80005}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1544930856

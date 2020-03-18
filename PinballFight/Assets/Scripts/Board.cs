@@ -23,7 +23,7 @@ public class Board : MonoBehaviour {
     private float touch_start;
     private float y0;
     private float width;
-    private float bound = 2.8125f;
+    private float bound = 2.69f;
 
     private void Awake() {
         width = GetComponent<BoxCollider2D>().size.x;        

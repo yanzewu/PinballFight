@@ -10,12 +10,8 @@ public class MapPickController : MonoBehaviour {
 
     ScrollRect scrollRect;
     public int item_count = 2;
-    public string[] image_filenames = new string[2]{
-        "background/Background", "background/Background_Rem"
-    };
-    public string[] texts = new string[2]{
-        "Map 1", "Map 2"
-    };
+    public string[] image_filenames;
+    public string[] texts;
 
     List<GameObject> buttons = new List<GameObject>();
 

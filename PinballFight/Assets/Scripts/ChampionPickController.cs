@@ -10,15 +10,9 @@ public class ChampionPickController : MonoBehaviour {
     public int item_count = 3;
     List<GameObject> buttons = new List<GameObject>();
 
-    public string[] image_filenames = new string[3]{
-        "snail_original", "snail_original", "snail_original"
-    };
+    public string[] image_filenames;
 
-    public string[] texts = new string[3]{
-        "Cute Snail. Your bounce CD will -1s",
-        "???. Your launch CD will -0.4s",
-        "???. Only 4 energies are required to improve launch CD"
-    };
+    public string[] texts;
 
     private void Awake() {
         
@@ -28,7 +22,7 @@ public class ChampionPickController : MonoBehaviour {
         var ph = GameObject.Find("PanelHost");
         var pu0 = GameObject.Find("PanelUnit");
         var pu0_rt = pu0.GetComponent<RectTransform>();
-        pu0_rt.sizeDelta = new Vector2(pu0_rt.sizeDelta.x, -(float)ph.GetComponent<RectTransform>().sizeDelta.y/item_count);
+        //pu0_rt.sizeDelta = new Vector2(pu0_rt.sizeDelta.x, -(float)ph.GetComponent<RectTransform>().sizeDelta.y/item_count);
         var h = pu0.GetComponent<RectTransform>().rect.height;
 
         for (int i = 0; i < item_count; i++){

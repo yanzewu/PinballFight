@@ -640,8 +640,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item_count: 2
   image_filenames:
-  - background/Background
-  - background/Background_Rem
+  - background/backgroundFull1
+  - background/backgroundFull2
   texts:
   - Map 1
   - Map 2

@@ -53,7 +53,7 @@ public class BotManager {
             board.transform.position.y - board_thick/2 : board.transform.position.y + board_thick/2;
         ball_r = ball.GetComponent<CircleCollider2D>().radius;
 
-        wall_x = Mathf.Abs(GameObject.Find("wallright").transform.position.x);
+        wall_x = 2.69f;
         this.player_id = player_id;
 
 #if UNITY_EDITOR

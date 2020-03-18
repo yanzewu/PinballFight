@@ -4,6 +4,7 @@ public class RectHPBar : MonoBehaviour {
 
     Texture2D empty_texture;
     public Color color = Color.white;
+    public bool is_masked = false;
     public int orientation = 0;
     public Vector2 padding = new Vector2(0.1f, 0.1f);
     public bool front = true;
@@ -22,6 +23,7 @@ public class RectHPBar : MonoBehaviour {
         ghost = new GameObject("HPGhost");
         var sr = ghost.AddComponent<SpriteRenderer>();
         sr.color = color;
+        if (is_masked) sr.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
 
         Vector2 pivot = Vector2.zero;
         if (orientation == 0 || orientation == 2) pivot = new Vector2(0, 0.5f);
@@ -34,6 +36,7 @@ public class RectHPBar : MonoBehaviour {
             pfu
         );
         ghost.transform.SetParent(this.gameObject.transform);
+        ghost.transform.localEulerAngles = Vector3.zero;
         if (orientation > 1) ghost.transform.Rotate(0, 0, 180);
         float zindex = front ? -0.01f:0.01f;
 

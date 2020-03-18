@@ -17,12 +17,22 @@ public class OnGameUIManager {
         this.player_items[0].ball_indicator_text = GameObject.Find("BallIndicatorText");
         this.player_items[1].ball_indicator_text = GameObject.Instantiate(this.player_items[0].ball_indicator_text);
         this.player_items[1].ball_indicator_text.transform.SetParent(GameObject.Find("Canvas").transform);
-        var op = this.player_items[1].ball_indicator_text.GetComponent<OnGamePosHelper>();
+        this.player_items[1].ball_indicator_text.transform.Rotate(0, 0, 180);
+
+        this.player_items[0].launch_indicator_text = GameObject.Find("LaunchIndicatorText");
+        this.player_items[1].launch_indicator_text = GameObject.Instantiate(this.player_items[0].launch_indicator_text);
+        this.player_items[1].launch_indicator_text.transform.SetParent(GameObject.Find("Canvas").transform);
+        this.player_items[1].launch_indicator_text.transform.Rotate(0, 0, 180);
+
+        var bit_op = this.player_items[1].ball_indicator_text.GetComponent<OnGamePosHelper>();
+        var lit_op = this.player_items[1].launch_indicator_text.GetComponent<OnGamePosHelper>();
         if (num_players == 1){
-            op.pos = new Vector3(100, 0, 0);
+            bit_op.pos = new Vector3(100, 0, 0);
+            lit_op.pos = new Vector3(100, 0, 0);
         }
         else{
-            op.pos = new Vector3(-op.pos.x, -op.pos.y, op.pos.z);
+            bit_op.pos = new Vector3(-bit_op.pos.x, -bit_op.pos.y, bit_op.pos.z);
+            lit_op.pos = new Vector3(-lit_op.pos.x, -lit_op.pos.y, lit_op.pos.z);
         }
 
         for (int i = 0; i < 2; i++){
@@ -34,6 +44,7 @@ public class OnGameUIManager {
         this.game_state = game_state;
 
         for (int i = 0; i < game_state.player_state.Length; i++){
+            update_launch_indicator_ui(i);
             update_indicator_ui(i);
             update_hp_ui(i);
         }
@@ -43,6 +54,8 @@ public class OnGameUIManager {
 
         player_item.board.GetComponent<SpriteHotLoader>().load(player_id);
         player_item.launcher.GetComponent<SpriteHotLoader>().load(player_id);
+        player_item.launch_indicator.GetComponent<SpriteHotLoader>().load();
+        player_item.launcher.transform.GetChild(0).GetComponent<SpriteHotLoader>().load(player_id);
         player_item.ball_indicator.GetComponent<SpriteHotLoader>().load();
         player_item.bouncevalue_indicator.GetComponent<SpriteHotLoader>().load();   // TODO bvr = 4
         foreach (var hp in player_item.HPs){
@@ -61,10 +74,10 @@ public class OnGameUIManager {
         
         convert_pos(player_item.board.transform, player_id, false);
         convert_pos(player_item.launcher.transform, player_id, false);
+        convert_pos(player_item.launch_indicator.transform, player_id, num_players == 1 && player_id == 1);
         convert_pos(player_item.ball_indicator.transform, player_id, num_players == 1 && player_id == 1);
         convert_pos(player_item.bouncevalue_indicator.transform, player_id, num_players == 1 && player_id == 1);
-        convert_pos(champion.transform, player_id, false);
-
+        
         
         for (int i = 0; i < player_item.HPs.Length; i++){
             convert_pos(player_item.HPs[i].transform, player_id, false);
@@ -76,7 +89,8 @@ public class OnGameUIManager {
         }
 
         if (num_players == 2 && player_id == 1){
-            flip_pos(player_item.board.transform);
+            
+            flip_pos(player_item.launch_indicator.transform);
             flip_pos(player_item.ball_indicator.transform);
             flip_pos(player_item.ball_indicator_text.transform);
             flip_pos(player_item.bouncevalue_indicator.transform);
@@ -86,10 +100,21 @@ public class OnGameUIManager {
                 flip_pos(hp.transform);
             }
         }
+
+        if (player_id == 1) {
+            flip_pos(player_item.board.transform);
+            convert_pos(champion.transform, 0, false);
+
+            flip_pos(player_item.launcher.transform);
+        }
+    }
+
+    public void update_launch_indicator_ui(int player_id){
+        player_items[player_id].launch_indicator_text.GetComponent<Text>().text = System.String.Format("{0:0.0}s", game_state.player_state[player_id].launch_cd);
     }
 
     public void update_indicator_ui(int player_id){
-        player_items[player_id].ball_indicator_text.GetComponent<Text>().text = "x" + game_state.player_state[0].num_balls.ToString();
+        player_items[player_id].ball_indicator_text.GetComponent<Text>().text = "x" + game_state.player_state[player_id].num_balls.ToString();
     }
 
     public void update_hp_ui(int player_id){

@@ -10,6 +10,8 @@ public class GameController : MonoBehaviour {
         public GameObject board;
         public GameObject launcher;
         public GameObject ball_indicator;
+        public GameObject launch_indicator;
+        public GameObject launch_indicator_text;
         public GameObject bouncevalue_indicator;
         public GameObject ball_indicator_text;
         public GameObject[] HPs;
@@ -47,7 +49,7 @@ public class GameController : MonoBehaviour {
         // static resources (does not change by changing level)
 
         var item_prefab_list = new List<string>{
-            "Ball", "Board", "Launcher", "BallIndicator", "HP", "BounceValueIndicator"
+            "Ball", "Board", "Launcher", "LaunchIndicator", "BallIndicator", "HP", "BounceValueIndicator"
         };
 
         item_prefabs = new Dictionary<string, GameObject>();
@@ -68,6 +70,7 @@ public class GameController : MonoBehaviour {
         for (int i = 0; i < 2; i++){
             player_item[i].board = Instantiate(item_prefabs["Board"]);
             player_item[i].launcher = Instantiate(item_prefabs["Launcher"]);
+            player_item[i].launch_indicator = Instantiate(item_prefabs["LaunchIndicator"]);
             player_item[i].ball_indicator = Instantiate(item_prefabs["BallIndicator"]);
             player_item[i].bouncevalue_indicator = Instantiate(item_prefabs["BounceValueIndicator"]);
 
@@ -237,9 +240,11 @@ public class GameController : MonoBehaviour {
             case Brick.BrickType.ROLL: ps.active_bounce_cd = Mathf.Clamp(
                 ps.active_bounce_cd - level_param.roll_bounce_cd_dec, level_param.bounce_cd_min, Mathf.Infinity); 
                 break;
-            case Brick.BrickType.SANDGLASS: ps.launch_cd = Mathf.Clamp(
-                ps.launch_cd - level_param.sandglass_launch_cd_dec, level_param.launch_cd_min, Mathf.Infinity); 
-                break;
+            case Brick.BrickType.SANDGLASS: {
+                ps.launch_cd = Mathf.Clamp(
+                    ps.launch_cd - level_param.sandglass_launch_cd_dec, level_param.launch_cd_min, Mathf.Infinity); 
+                ongame_ui_manager.update_launch_indicator_ui(player_id);
+                break;}
             case Brick.BrickType.LIGHTNTING: ball_manager.acclerate_all(player_id, level_param.lightening_accelerate_ratio); break;
             default: break;
         }
@@ -310,13 +315,19 @@ public class GameController : MonoBehaviour {
             player_item[i].board.GetComponent<Board>().set_active_length(Mathf.Clamp01(
                 ps.active_bounce_tr / ps.active_bounce_cd
             ));
+            player_item[i].launcher.GetComponent<Launcher>().set_active_length(1.0f - Mathf.Clamp01(
+                ps.launch_tr / ps.launch_cd
+            ));
 
         }
 
         if (checkpoint_state < level_param.launcher_cd_checkpoints.Count && 
-            Time.deltaTime - time_begin >= level_param.launcher_cd_checkpoints[checkpoint_state]){
+            Time.time - time_begin >= level_param.launcher_cd_checkpoints[checkpoint_state]){
                 foreach (var ps in game_state.player_state){
                     ps.launch_cd = Mathf.Clamp(ps.launch_cd - level_param.launcher_cd_checkpoint_dec, level_param.launch_cd_min, Mathf.Infinity);
+                }
+                for (int i = 0; i < 2; i++){
+                    ongame_ui_manager.update_launch_indicator_ui(i);
                 }
                 checkpoint_state++;
             }

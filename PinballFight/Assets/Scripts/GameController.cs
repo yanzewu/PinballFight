@@ -73,6 +73,7 @@ public class GameController : MonoBehaviour {
             player_item[i].launch_indicator = Instantiate(item_prefabs["LaunchIndicator"]);
             player_item[i].ball_indicator = Instantiate(item_prefabs["BallIndicator"]);
             player_item[i].bouncevalue_indicator = Instantiate(item_prefabs["BounceValueIndicator"]);
+            player_item[i].bouncevalue_indicator.GetComponent<BounceValueIndicator>().player_id = i;
 
             player_item[i].HPs = new GameObject[game_param.level_params[0].lives];
             for (int j = 0; j < game_param.level_params[0].lives; j++){
@@ -104,6 +105,10 @@ public class GameController : MonoBehaviour {
             ui_manager.on_click_info();
             StatManager.get_state().is_first_time = false;
         }
+
+        for (int i = 0; i < 2; i++){
+            ongame_ui_manager.update_bouncevalue_ui(i);
+        }
     }
 
     public void reload_level(int level){
@@ -114,6 +119,10 @@ public class GameController : MonoBehaviour {
         game_terrian.instantiate_level(StatManager.get_state().current_map);
 
         level_param = game_param.level_params[level];
+
+        if (StatManager.get_state().game_mode == 0){
+            StatManager.get_state().champion[1] = UnityEngine.Random.Range(1, 4);
+        }
 
         game_state.reload(level_param);
         brick_manager.reload(level_param);
@@ -266,7 +275,7 @@ public class GameController : MonoBehaviour {
     public void bounce_value_obtained(int player_id){
         game_state.player_state[player_id].bounce_value++;
         if (game_state.player_state[player_id].bounce_value == game_state.player_state[player_id].bounce_value_required){
-            game_state.player_state[player_id].bounce_value = 0;
+            game_state.player_state[player_id].bounce_value = game_state.player_state[player_id].bounce_value_offset;
             on_skill_effect(Brick.BrickType.SANDGLASS, player_id, Vector2.zero);
         }
         ongame_ui_manager.update_bouncevalue_ui(player_id);

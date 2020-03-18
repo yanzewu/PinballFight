@@ -127,8 +127,9 @@ public class OnGameUIManager {
     }
 
     public void update_bouncevalue_ui(int player_id){
+        Debug.Log(game_state.player_state[player_id].bounce_value);
         player_items[player_id].bouncevalue_indicator.GetComponent<BounceValueIndicator>().set_length(
-            (float)game_state.player_state[player_id].bounce_value / game_state.player_state[player_id].bounce_value_required
+            game_state.player_state[player_id].bounce_value
         );
     }
 

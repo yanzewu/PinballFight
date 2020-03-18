@@ -32,7 +32,7 @@ public class ChampionPickController : MonoBehaviour {
             pu_new.transform.localPosition += new Vector3(0, -i*h, 0);
             int j = i;
 
-            pu_new.GetComponent<Toggle>().onValueChanged.AddListener(b => {if (b) champion_choosed(j);});
+            pu_new.GetComponent<Toggle>().onValueChanged.AddListener(b => {if (b) champion_choosed(j+1);});
             pu_new.transform.GetChild(0).gameObject.GetComponent<Text>().text = texts[i];
             var img = pu_new.transform.GetChild(1).gameObject.GetComponent<Image>();
 
@@ -43,12 +43,13 @@ public class ChampionPickController : MonoBehaviour {
 
             buttons.Add(pu_new);
         }
-        buttons[StatManager.get_state().champion[0]].GetComponent<Toggle>().Select();
+        buttons[StatManager.get_state().champion[0]-1].GetComponent<Toggle>().Select();
 
         pu0.SetActive(false);
     }
 
     private void champion_choosed(int index){
+        Debug.Log(index);
         StatManager.get_state().champion[0] = index;
     }
 
@@ -58,7 +59,7 @@ public class ChampionPickController : MonoBehaviour {
         }
 
         if (EventSystem.current.currentSelectedGameObject == null || EventSystem.current.currentSelectedGameObject.tag != "Selectable"){
-            EventSystem.current.SetSelectedGameObject(buttons[StatManager.get_state().champion[0]]);
+            EventSystem.current.SetSelectedGameObject(buttons[StatManager.get_state().champion[0]-1]);
         }
     }
 

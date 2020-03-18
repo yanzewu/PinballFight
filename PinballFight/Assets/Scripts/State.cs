@@ -32,6 +32,7 @@ public class GameState
         public float launcher_angle;
         public int bounce_value;
         public int bounce_value_required;
+        public int bounce_value_offset;
         public int num_balls;
     };
 
@@ -53,6 +54,7 @@ public class GameState
                 param.launcher_min_angle, param.launcher_max_angle);
             player_state[i].bounce_value = 0;
             player_state[i].bounce_value_required = param.bounce_value_required;
+            player_state[i].bounce_value_offset = 0;
             player_state[i].num_balls = 1;
             
             int champion = StatManager.get_state().champion[i];
@@ -64,7 +66,8 @@ public class GameState
                 player_state[i].launch_cd -= param.championB_launch_cd_dec;
             }
             else if (champion == 3){
-                player_state[i].bounce_value_required = param.championC_bounce_value_required;
+                player_state[i].bounce_value_offset = param.bounce_value_required - param.championC_bounce_value_required;
+                player_state[i].bounce_value = player_state[i].bounce_value_offset;
             }
         }
 

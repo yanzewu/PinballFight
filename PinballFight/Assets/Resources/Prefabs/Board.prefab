@@ -218,6 +218,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: {r: 1, g: 1, b: 1, a: 0.63529414}
+  is_masked: 0
   orientation: 0
   padding: {x: 0.01, y: 0}
   front: 1
@@ -337,7 +338,9 @@ MonoBehaviour:
   filenames:
   - snail_blue
   - snail_red
+  - snail_blue
+  - snail_red
   - DrOct_blue
   - DrOct_red
-  - rhino_blue
+  - rhino_red
   - rhino_red

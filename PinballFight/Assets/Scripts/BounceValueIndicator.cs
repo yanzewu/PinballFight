@@ -2,12 +2,17 @@ using UnityEngine;
 
 public class BounceValueIndicator : MonoBehaviour {
 
-    private void Start() {
-        set_length(0);
+    public int player_id;
+    SpriteHotLoader sr;
+
+    private void Awake() {
+        sr = GetComponent<SpriteHotLoader>();
     }
 
-    public void set_length(float length){
-        GetComponent<RectHPBar>().set_hp(length);
+    public void set_length(int length){
+        //GetComponent<RectHPBar>().set_hp(length);
+        sr.load(player_id * 6 + length);
+        
     }
 
     private void Update() {

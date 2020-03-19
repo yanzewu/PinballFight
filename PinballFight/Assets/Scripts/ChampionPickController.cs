@@ -16,6 +16,10 @@ public class ChampionPickController : MonoBehaviour {
 
     private void Awake() {
         
+        for (int i = 0; i < texts.Length; i++){
+            texts[i] =  texts[i].Replace('&', '\n');
+        }
+
         GameObject.Find("BtnQuit").GetComponent<Button>().onClick.AddListener(delegate{SceneManager.LoadScene("Entry");});
         GameObject.Find("BtnContinue").GetComponent<Button>().onClick.AddListener(delegate{SceneManager.LoadScene("MapPick");});
 

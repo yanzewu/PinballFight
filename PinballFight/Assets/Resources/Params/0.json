@@ -37,9 +37,9 @@
                 0.09526000171899796
             ],
             "brick_probabilities": [
-                0.54,
+                0.52,
                 0.06000000149011612,
-                0.10000000149011612,
+                0.12000000149011612,
                 0.10000000149011612,
                 0.10000000149011612,
                 0.0,
@@ -49,7 +49,7 @@
             "bounce_value_required": 5,
             "roll_bounce_cd_dec": 0.5,
             "sandglass_launch_cd_dec": 0.30000001192092898,
-            "lightening_accelerate_ratio": 1.2000000476837159,
+            "lightening_accelerate_ratio": 1.40000476837159,
             "championA_bounce_cd_dec": 1.0,
             "championB_launch_cd_dec": 0.6000000238418579,
             "championC_bounce_value_required": 4,
@@ -73,7 +73,7 @@
             "bot_speed": [
                 4.0,
                 10.0,
-                20.0
+                16.0
             ],
             "bot_prediction": [
                 1,

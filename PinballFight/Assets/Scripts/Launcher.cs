@@ -17,8 +17,8 @@ public class Launcher : MonoBehaviour {
     private void Awake() {
         barrel = transform.GetChild(0).gameObject;
         var dr = barrel.transform.position - this.transform.position;
-        barrel_dr = 0.09f;// Mathf.Sqrt(dr.x*dr.x + dr.y*dr.y);
-        barrel_shift = 0.08f;
+        barrel_dr = 0.0f;// Mathf.Sqrt(dr.x*dr.x + dr.y*dr.y);
+        barrel_shift = 0.18f;
 
         hp_bar = transform.GetChild(0).GetComponent<RectHPBar>();
     }
@@ -47,8 +47,8 @@ public class Launcher : MonoBehaviour {
         }
 
         target_pos = new Vector2(-Mathf.Cos(this.player_state.launcher_angle), Mathf.Sin(this.player_state.launcher_angle)) * barrel_dr;
-        barrel.transform.localPosition = new Vector3(target_pos.x, target_pos.y + barrel_shift, 0.01f);
-        barrel.transform.localEulerAngles = new Vector3(0, 0, -180/Mathf.PI * this.player_state.launcher_angle);
+        barrel.transform.localPosition = new Vector3(target_pos.x - 0.025f, target_pos.y + barrel_shift, 0.01f);
+        barrel.transform.localEulerAngles = new Vector3(0, 0, 90-180/Mathf.PI * this.player_state.launcher_angle);
     }
 
 }

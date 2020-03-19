@@ -640,11 +640,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item_count: 2
   image_filenames:
-  - background/backgroundFull1
-  - background/backgroundFull2
+  - background/backgroundOrange
+  - background/backgroundPink
   texts:
-  - Map 1
-  - Map 2
+  - "\u5929\u7A7A\u4E4B\u6A59"
+  - "\u7C89\u4E4B\u8C37"
 --- !u!4 &1076140927
 Transform:
   m_ObjectHideFlags: 0
@@ -799,7 +799,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -2.2, y: -36.6}
-  m_SizeDelta: {x: 311.28, y: 401.4}
+  m_SizeDelta: {x: 250, y: 401.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1497141079
 MonoBehaviour:
@@ -1053,8 +1053,8 @@ MonoBehaviour:
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.42745098, g: 0.74509805, b: 1, a: 1}
-    m_SelectedColor: {r: 0.42745098, g: 0.74509805, b: 1, a: 1}
+    m_PressedColor: {r: 0.45612317, g: 0.6667166, b: 0.7735849, a: 1}
+    m_SelectedColor: {r: 0.5058824, g: 0.7686275, b: 0.90196085, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -1217,7 +1217,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 33eafe46bb3ffb64c93d796dd79d63e7, type: 3}
     m_FontSize: 28
     m_FontStyle: 0
     m_BestFit: 0

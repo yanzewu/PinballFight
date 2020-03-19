@@ -96,8 +96,8 @@ MonoBehaviour:
   filename: ball_glow
   pfu: 96
   filenames:
-  - ball_glow
-  - ball_glow
+  - ballFireBlue
+  - ballFireRed
 --- !u!1 &7025691612770039830
 GameObject:
   m_ObjectHideFlags: 0
@@ -198,7 +198,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.12
+  m_Radius: 0.14
 --- !u!50 &7025691612770039833
 Rigidbody2D:
   serializedVersion: 4

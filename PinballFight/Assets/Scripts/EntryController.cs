@@ -27,7 +27,7 @@ public class EntryController : MonoBehaviour {
         //sp.onValueChanged.AddListener(b=>{if(b) StatManager.get_state().game_mode = 0;});
         mp.onValueChanged.AddListener(b=>{if(b) StatManager.get_state().game_mode = 1;});
         easy.onValueChanged.AddListener(b=>{if(b) {StatManager.get_state().bot_level = 0;StatManager.get_state().game_mode = 0;}});
-        hard.onValueChanged.AddListener(b=>{if(b) {StatManager.get_state().bot_level = 2;StatManager.get_state().game_mode = 1;}});
+        hard.onValueChanged.AddListener(b=>{if(b) {StatManager.get_state().bot_level = 2;StatManager.get_state().game_mode = 0;}});
 
         GameObject.Find("BtnGameMode").GetComponent<Button>().onClick.AddListener(() => {
             panel_gamemode.SetActive(true);

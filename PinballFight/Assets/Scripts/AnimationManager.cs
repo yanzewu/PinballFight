@@ -12,6 +12,10 @@ public class AnimationManager {
     public void initialize(){
         add_animation("Explosion", 1.0f);
         add_animation("SelfExplosion", 1.0f);
+        add_animation("BrickBall", 1.0f);
+        add_animation("BrickCD", 1.0f);
+        add_animation("BrickFlash", 1.0f);
+
 
         controller = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
     }

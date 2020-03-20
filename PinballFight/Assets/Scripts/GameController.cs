@@ -262,16 +262,22 @@ public class GameController : MonoBehaviour {
                  sound_manager.play_sound("explosion_brick");
                  brick_manager.detonate(player_id, pos, level_param.explode_damage); break;}
             case Brick.BrickType.BALL: {ps.num_balls++; sound_manager.play_sound("brick_bonus");
+            animation_manager.play_animation_at("BrickBall", pos);
             ongame_ui_manager.update_indicator_ui(player_id);}; break;
-            case Brick.BrickType.ROLL: ps.active_bounce_cd = Mathf.Clamp(
+            case Brick.BrickType.ROLL: {ps.active_bounce_cd = Mathf.Clamp(
                 ps.active_bounce_cd - level_param.roll_bounce_cd_dec, level_param.bounce_cd_min, Mathf.Infinity); 
-                break;
+                animation_manager.play_animation_at("BrickCD", pos);
+                break;}
             case Brick.BrickType.SANDGLASS: {
                 ps.launch_cd = Mathf.Clamp(
                     ps.launch_cd - level_param.sandglass_launch_cd_dec, level_param.launch_cd_min, Mathf.Infinity); 
                 ongame_ui_manager.update_launch_indicator_ui(player_id);
                 break;}
-            case Brick.BrickType.LIGHTNTING: ball_manager.acclerate_all(player_id, level_param.lightening_accelerate_ratio); break;
+            case Brick.BrickType.LIGHTNTING: {
+                ball_manager.acclerate_all(player_id, level_param.lightening_accelerate_ratio); 
+                animation_manager.play_animation_at("BrickFlash", pos);
+                break;
+            }
             default: break;
         }
     }

@@ -116,6 +116,7 @@ public class GameController : MonoBehaviour {
 
     private void OnDestroy() {
         Application.targetFrameRate = 30;
+        sound_manager.finalize();
     }
 
     public void reload_level(int level){

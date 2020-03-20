@@ -20,6 +20,8 @@ public class SoundManager {
 
         speaker = GameObject.Find("Speaker").GetComponent<AudioSource>();
 
+        GameObject.Find("BGM").GetComponent<AudioSource>().Stop();
+
     }
 
     public void add_sound(string name, string filename=null){
@@ -29,6 +31,10 @@ public class SoundManager {
 
     public void play_sound(string name){
         speaker.PlayOneShot(sounds[name]);
+    }
+
+    public void finalize(){
+        GameObject.Find("BGM").GetComponent<AudioSource>().Play();
     }
 
 }

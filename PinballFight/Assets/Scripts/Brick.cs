@@ -46,7 +46,7 @@ public class Brick : MonoBehaviour {
 
         durability -= damage;
 
-        if (durability <= 0){
+        if (durability <= 0 && this.gameObject != null){
             Destroy(this.gameObject);
             controller.brick_destroyed(brick_type, player_id, GetComponent<Rigidbody2D>().position);
         }

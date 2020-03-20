@@ -20,7 +20,7 @@ public class SoundManager {
 
         speaker = GameObject.Find("Speaker").GetComponent<AudioSource>();
 
-    //    GameObject.Find("BGM").GetComponent<AudioSource>().Stop();
+        GameObject.Find("BGM").GetComponent<AudioSource>().Stop();
 
     }
 

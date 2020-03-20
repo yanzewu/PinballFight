@@ -31,7 +31,7 @@ public class UIManager {
             Camera.main.orthographicSize = 5.0f * Screen.height / (float)Screen.width * (9/16.0f);
         }
         
-        GameObject.Find("Canvas2").transform.SetParent(GameObject.Find("Canvas").transform);
+        //GameObject.Find("Canvas2").transform.SetParent(GameObject.Find("Canvas").transform);
 
     }
 

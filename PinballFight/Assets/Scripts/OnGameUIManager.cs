@@ -56,8 +56,8 @@ public class OnGameUIManager {
         player_item.launcher.GetComponent<SpriteHotLoader>().load(player_id);
         player_item.launch_indicator.GetComponent<SpriteHotLoader>().load();
         player_item.launcher.transform.GetChild(0).GetComponent<SpriteHotLoader>().load(player_id);
-        player_item.ball_indicator.GetComponent<SpriteHotLoader>().load();
-        player_item.bouncevalue_indicator.GetComponent<SpriteHotLoader>().load();   // TODO bvr = 4
+        player_item.ball_indicator.GetComponent<SpriteHotLoader>().load(player_id);
+        player_item.bouncevalue_indicator.GetComponent<SpriteHotLoader>().load(0);   // TODO bvr = 4
         foreach (var hp in player_item.HPs){
             hp.GetComponent<SpriteHotLoader>().load();
         }

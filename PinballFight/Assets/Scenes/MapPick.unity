@@ -638,13 +638,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0372c9c8fe669234b887a55dd0ab1e4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item_count: 2
+  item_count: 3
   image_filenames:
   - background/backgroundOrange
   - background/backgroundPink
+  - background/backgroundGreen
   texts:
-  - "\u5929\u7A7A\u4E4B\u6A59"
-  - "\u7C89\u4E4B\u8C37"
+  - "\u6A59\xB7\u7ECF\u5178"
+  - "\u7C89\xB7\u8DF3\u8DC3"
+  - "\u9752\xB7\u7A7F\u68AD"
 --- !u!4 &1076140927
 Transform:
   m_ObjectHideFlags: 0

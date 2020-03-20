@@ -3,7 +3,7 @@
     "level_params": [
         {
             "lives": 3,
-            "ball_speed": 2.5,
+            "ball_speed": 3.2,
             "bounce_cd_init": 6.0,
             "bounce_cd_min": 3.0,
             "bounce_dy": 0.3125,
@@ -18,14 +18,14 @@
             "launch_rate": 20.0,
             "launcher_min_angle": 0.5235987901687622,
             "launcher_max_angle": 1.3089970350265504,
-            "launcher_angular_speed": 0.6283185482025147,
+            "launcher_angular_speed": 1.0283185482025147,
             "launcher_cd_checkpoints": [
                 15.0,
                 30.0,
                 45.0,
                 60.0
             ],
-            "launcher_cd_checkpoint_dec": 0.30000001192092898,
+            "launcher_cd_checkpoint_dec": 0.60000001192092898,
             "brick_durability_probs": [
                 0.039170000702142718,
                 0.06458000093698502,
@@ -38,20 +38,20 @@
                 0.09526000171899796
             ],
             "brick_probabilities": [
-                0.5,
-                0.10000000149011612,
-                0.10000000149011612,
+                0.52,
+                0.06000000149011612,
+                0.12000000149011612,
                 0.10000000149011612,
                 0.10000000149011612,
                 0.0,
                 0.10000000149011612
             ],
-            "triangluar_iron_brick_probability": 0.4000000059604645,
+            "triangluar_iron_brick_probability": 0.12000000059604645,
             "bounce_value_required": 5,
-            "explode_damage": 3,
+            "explode_damage": 2,
             "roll_bounce_cd_dec": 0.5,
             "sandglass_launch_cd_dec": 0.30000001192092898,
-            "lightening_accelerate_ratio": 1.2000000476837159,
+            "lightening_accelerate_ratio": 1.4000000476837159,
             "championA_bounce_cd_dec": 1.0,
             "championB_launch_cd_dec": 0.6000000238418579,
             "championC_bounce_value_required": 4,
@@ -75,7 +75,7 @@
             "bot_speed": [
                 4.0,
                 10.0,
-                20.0
+                16.0
             ],
             "bot_prediction": [
                 1,

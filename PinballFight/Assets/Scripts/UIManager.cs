@@ -37,7 +37,7 @@ public class UIManager {
     public void on_gameover(bool win){
         gameover_panel.SetActive(true);
         if (win){
-            GameObject.Find("TextGameOver").GetComponent<Text>().text = "You win!";
+            GameObject.Find("TextGameOver").GetComponent<Text>().text = "Victory!";
         }
         else{
             GameObject.Find("TextGameOver").GetComponent<Text>().text = "Game over!";

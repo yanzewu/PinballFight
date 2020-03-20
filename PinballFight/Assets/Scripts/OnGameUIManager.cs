@@ -92,7 +92,7 @@ public class OnGameUIManager {
             
             flip_pos(player_item.launch_indicator.transform);
             flip_pos(player_item.ball_indicator.transform);
-            flip_pos(player_item.ball_indicator_text.transform);
+            //flip_pos(player_item.ball_indicator_text.transform);
             flip_pos(player_item.bouncevalue_indicator.transform);
             player_item.bouncevalue_indicator.GetComponent<RectHPBar>().orientation = 3;
             player_item.board.GetComponent<RectHPBar>().orientation = 2;

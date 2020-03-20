@@ -244,7 +244,7 @@ public class GameController : MonoBehaviour {
         var ps = game_state.player_state[player_id];
         switch(brick_type){
             case Brick.BrickType.EXPLOSION: { animation_manager.play_animation_at("Explosion", pos);
-                 brick_manager.detonate(player_id, pos); break;}
+                 brick_manager.detonate(player_id, pos, level_param.explode_damage); break;}
             case Brick.BrickType.BALL: {ps.num_balls++; ongame_ui_manager.update_indicator_ui(player_id);}; break;
             case Brick.BrickType.ROLL: ps.active_bounce_cd = Mathf.Clamp(
                 ps.active_bounce_cd - level_param.roll_bounce_cd_dec, level_param.bounce_cd_min, Mathf.Infinity); 

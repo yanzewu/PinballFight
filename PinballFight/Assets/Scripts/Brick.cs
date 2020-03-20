@@ -36,14 +36,14 @@ public class Brick : MonoBehaviour {
         update_ui();
     }
 
-    public void hitten(int player_id){
+    public void hitten(int player_id, int damage=1){
         // ! this will be overwritten by subclasses
 
         if (brick_type == BrickType.IRON) return;
 
-        durability--;
+        durability -= damage;
 
-        if (durability == 0){
+        if (durability <= 0){
             Destroy(this.gameObject);
             controller.brick_destroyed(brick_type, player_id, GetComponent<Rigidbody2D>().position);
         }

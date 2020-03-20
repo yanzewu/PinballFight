@@ -45,6 +45,7 @@ public class LevelParam {
 
     // SPECIAL SKILLS
 
+    public int explode_damage = 3;
     public float roll_bounce_cd_dec = 0.5f;
     public float sandglass_launch_cd_dec = 0.3f;
     public float lightening_accelerate_ratio = 1.2f;

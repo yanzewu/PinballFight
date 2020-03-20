@@ -185,10 +185,11 @@ public class BrickManager {
         }
     }
 
-    public void detonate(int player_id, Vector2 pos){
+    public void detonate(int player_id, Vector2 pos, int damage){
         foreach (var b in GameObject.FindGameObjectsWithTag("Brick")){
-            if ((b.GetComponent<Rigidbody2D>().position - pos).magnitude < 1.5 * grid_size){
-                b.GetComponent<Brick>().hitten(player_id);
+            var r = (b.GetComponent<Rigidbody2D>().position - pos).magnitude;
+            if (r < 1.5 * grid_size && r > 0.7 * grid_size){
+                b.GetComponent<Brick>().hitten(player_id, damage);
             }
         }
     }

@@ -18,7 +18,7 @@ public class AnimationManager {
 
     private void add_animation(string name, float duration){
         animation_prefabs.Add(name, ResManager.load_prefab(name));
-        animation_lengths.Add(name, 1.0f);
+        animation_lengths.Add(name, duration);
     }
 
     public void play_animation_at(string name, Vector2 pos){

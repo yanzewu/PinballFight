@@ -20,6 +20,10 @@ public class ResManager {
         return Resources.Load<Texture2D>("Images/" + name.ToString());
     }
 
+    public static AudioClip load_runtime_sound(string name){        
+        return Resources.Load<AudioClip>("Sounds/" + name.ToString());
+    }
+
     public static string terrian_path(int level){
         return "Terrains/Grid" + level.ToString();
     }

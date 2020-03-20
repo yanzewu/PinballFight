@@ -29,6 +29,7 @@ public class GameController : MonoBehaviour {
     UIManager ui_manager = new UIManager();
     OnGameUIManager ongame_ui_manager = new OnGameUIManager();
     AnimationManager animation_manager = new AnimationManager();
+    SoundManager sound_manager = new SoundManager();
     TerrainManager game_terrian = new TerrainManager();
     BallManager ball_manager = new BallManager();
     BrickManager brick_manager = new BrickManager();
@@ -86,6 +87,7 @@ public class GameController : MonoBehaviour {
         ball_manager.initialize(this, item_prefabs["Ball"], game_param);
         ui_manager.initialize();
         animation_manager.initialize();
+        sound_manager.initialize();
 
         if (StatManager.get_state().game_mode == 0){
             bot_manager = new BotManager();
@@ -183,6 +185,13 @@ public class GameController : MonoBehaviour {
     private void lose(int player_id){
         Debug.Log("Current=" + StatManager.get_state().current_level.ToString() + "total=" + game_param.level_params.Count);
 
+        if (player_id == 0){
+            sound_manager.play_sound("lose_game over");
+        }
+        else{
+            sound_manager.play_sound("win_victory");
+        }
+
         ui_manager.on_gameover(player_id != 0);
         pause_game();
         var g_state = StatManager.get_state();
@@ -220,7 +229,7 @@ public class GameController : MonoBehaviour {
             ongame_ui_manager.update_hp_ui(player_id);    
         }
         animation_manager.play_animation_at("SelfExplosion", player_item[player_id].board.transform.position);
-
+        sound_manager.play_sound("explosion_hero");
         if (game_state.player_state[player_id].life == 0) {
             lose(player_id);
         }
@@ -240,6 +249,7 @@ public class GameController : MonoBehaviour {
     public void brick_destroyed(Brick.BrickType brick_type, int player_id, Vector2 pos){
         game_state.num_bricks--;
         bounce_value_obtained(player_id);
+        sound_manager.play_sound("brick_disappear");
         on_skill_effect(brick_type, player_id, pos);
     }
 
@@ -249,8 +259,10 @@ public class GameController : MonoBehaviour {
         var ps = game_state.player_state[player_id];
         switch(brick_type){
             case Brick.BrickType.EXPLOSION: { animation_manager.play_animation_at("Explosion", pos);
+                 sound_manager.play_sound("explosion_brick");
                  brick_manager.detonate(player_id, pos, level_param.explode_damage); break;}
-            case Brick.BrickType.BALL: {ps.num_balls++; ongame_ui_manager.update_indicator_ui(player_id);}; break;
+            case Brick.BrickType.BALL: {ps.num_balls++; sound_manager.play_sound("brick_bonus");
+            ongame_ui_manager.update_indicator_ui(player_id);}; break;
             case Brick.BrickType.ROLL: ps.active_bounce_cd = Mathf.Clamp(
                 ps.active_bounce_cd - level_param.roll_bounce_cd_dec, level_param.bounce_cd_min, Mathf.Infinity); 
                 break;
@@ -264,6 +276,10 @@ public class GameController : MonoBehaviour {
         }
     }
 
+    public void ball_bounced(){
+//        sound_manager.play_sound("hit_board");
+    }
+
     public void ball_ignited(GameObject ball){
         var b = ball.GetComponent<Ball>();
         var rb = ball.GetComponent<Rigidbody2D>();
@@ -274,6 +290,7 @@ public class GameController : MonoBehaviour {
         b.response_to_brick = false;
         ball_manager.ignore_bricks(ball);
         rb.velocity = level_param.fireball_speed * level_param.ball_speed * direction;
+        sound_manager.play_sound("hit_bounce");
         Debug.Log("Ball Ignited with velocity=" + rb.velocity.ToString());
     }
 

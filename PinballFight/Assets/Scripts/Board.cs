@@ -113,6 +113,9 @@ public class Board : MonoBehaviour {
             else if (other_id == player_id && is_active){
                 other.gameObject.GetComponent<Ball>().ignite();
             }
+            else {
+                controller.ball_bounced();
+            }
         }
     }
 

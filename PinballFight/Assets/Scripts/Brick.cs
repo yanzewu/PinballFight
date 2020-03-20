@@ -12,13 +12,15 @@ public class Brick : MonoBehaviour {
     public int durability;
     GameController controller;
     SpriteHotLoader crack_sh;
+    SpriteHotLoader bonus_sh;
 
     private void Awake() {
         // load 9 graphs
 
         controller = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
-        if (is_triangular) return;
         crack_sh = transform.GetChild(0).GetComponent<SpriteHotLoader>();
+        if (is_triangular) return;
+        bonus_sh = transform.GetChild(1).GetComponent<SpriteHotLoader>();
     }
 
     private void Start() {
@@ -32,6 +34,7 @@ public class Brick : MonoBehaviour {
         }
         else{
             GetComponent<SpriteHotLoader>().load((int)brick_type);
+            if ((int)brick_type >= 2) bonus_sh.load((int)brick_type);
         }
         update_ui();
     }
@@ -53,7 +56,6 @@ public class Brick : MonoBehaviour {
     }
 
     public void update_ui(){
-        if (is_triangular) return;
         if (brick_type == BrickType.IRON) return;
         if (durability == 9) return;
         else if (durability >= 7){
@@ -66,8 +68,8 @@ public class Brick : MonoBehaviour {
             crack_sh.load(0);
         }
 
-        //var sr = GetComponent<SpriteRenderer>();
-        //sr.color = new Color(sr.color.r, sr.color.g, sr.color.b, durability / 9.0f);
+        var sr = GetComponent<SpriteRenderer>();
+        sr.color = new Color(sr.color.r, sr.color.g, sr.color.b, 0.5f + 0.5f * durability / 9.0f);
     }
 
 }

@@ -381,6 +381,7 @@ MonoBehaviour:
     - 0.1
     triangluar_iron_brick_probability: 0.4
     bounce_value_required: 5
+    explode_damage: 3
     roll_bounce_cd_dec: 0.5
     sandglass_launch_cd_dec: 0.3
     lightening_accelerate_ratio: 1.2

@@ -46,6 +46,7 @@ public class GameController : MonoBehaviour {
     
     void Awake()
     {
+        Application.targetFrameRate = 60;
         // static resources (does not change by changing level)
 
         var item_prefab_list = new List<string>{
@@ -109,6 +110,10 @@ public class GameController : MonoBehaviour {
         for (int i = 0; i < 2; i++){
             ongame_ui_manager.update_bouncevalue_ui(i);
         }
+    }
+
+    private void OnDestroy() {
+        Application.targetFrameRate = 30;
     }
 
     public void reload_level(int level){

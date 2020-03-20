@@ -189,6 +189,12 @@ public class BrickManager {
         foreach (var b in GameObject.FindGameObjectsWithTag("Brick")){
             var r = (b.GetComponent<Rigidbody2D>().position - pos).magnitude;
             if (r < 1.5 * grid_size && r > 0.7 * grid_size){
+                if (b.GetComponent<Brick>().brick_type == Brick.BrickType.EXPLOSION) continue;
+                if (b.gameObject == null) {
+                    Debug.LogWarning("repeated explosion!");
+                    Debug.LogWarning(b.name);
+                    continue;
+                }
                 b.GetComponent<Brick>().hitten(player_id, damage);
             }
         }

@@ -138,3 +138,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   velocity_ampl: 1.56
+  velocity_max: 20

@@ -8,7 +8,7 @@ Basic commands:
     Commit changes:     git commit -am "Info"
     Update from remote: git pull
     Update to remote:   git push
-    Discard all changes (cannot withdraw!): git reset --hard
+    Discard all changes (cannot undo!): git reset --hard
     Reset one file:     git checkout <filename>
     Switch branch:      git checkout <branchname>
 It's recommended to commit changes before switching any branch.
